@@ -1,1 +1,13 @@
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+# img
+pillow
+
+# web
 streamlit
+requests
+python-dotenv
