@@ -109,7 +109,8 @@ def set_background_color(apply_background=True):
                 background-size: cover;
                 background-position: center;
                 background-attachment: fixed;
-                color: white !important;
+                background-color: white !important;
+                color: black !important;
                 height: 100vh;
                 padding: 0;
             }}
