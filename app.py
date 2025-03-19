@@ -293,8 +293,8 @@ with st.container():  # Ensures all content is grouped together
                 # Display an error if no gemstones are detected
                 st.error(error)
 
-    # Close the main container div
-    st.markdown("</div>", unsafe_allow_html=True)
+# Close the main container div
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer (hidden)
 st.markdown(
