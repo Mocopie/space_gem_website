@@ -229,7 +229,7 @@ if os.path.exists(LOGO_IMAGE_PATH):
     )
 
 # Separation line
-st.markdown("___")
+# st.markdown("___")
 
 # File uploader section with centered instructions
 st.markdown(
