@@ -218,11 +218,13 @@ if os.path.exists(LOGO_IMAGE_PATH):
 
     st.markdown(
         f"""
+        <div class="main">
         <div style="text-align: center; padding: 20px;">
             <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
         </div>
         <div style="text-align: center; padding-top: 20px;">
             <h4 style="color: #333333; font-size: 1.5rem;">Identify Your Gemstone</h4>
+        </div>
         </div>
         """,
         unsafe_allow_html=True,
