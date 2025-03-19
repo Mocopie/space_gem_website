@@ -124,7 +124,7 @@ def set_background_color(apply_background=True):
 
 
 # Apply space and gemstone-inspired background and colors
-set_background_color(apply_background=True)
+set_background_color(apply_background=False)
 
 # Logo and Title Section
 if os.path.exists(LOGO_IMAGE_PATH):
