@@ -300,6 +300,7 @@ with st.container():  # Ensures all content is grouped together
 st.markdown(
     """
     <style>
+    #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
     """,
