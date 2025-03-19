@@ -301,6 +301,8 @@ st.markdown(
     """
     <style>
     #MainMenu {visibility: hidden;}
+    MainMenu {visibility: hidden;}
+    .stDeployButton {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
     """,
