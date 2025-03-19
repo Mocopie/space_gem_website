@@ -11,3 +11,8 @@ pillow
 streamlit
 requests
 python-dotenv
+
+# to work with YOLOv8
+ultralytics
+opencv-python
+roboflow
