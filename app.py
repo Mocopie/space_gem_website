@@ -109,8 +109,7 @@ def set_background_color(apply_background=True):
                 background-size: cover;
                 background-position: center;
                 background-attachment: fixed;
-                background-color: white !important;
-                color: black !important;
+                color: white;
                 height: 100vh;
                 padding: 0;
             }}
@@ -212,6 +211,9 @@ def set_background_color(apply_background=True):
 # Apply the background styling
 set_background_color(apply_background=True)
 
+# Wrap the main content in the styled container
+st.markdown('<div class="main">', unsafe_allow_html=True)
+
 # Logo and Title Section
 if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
@@ -293,6 +295,9 @@ if img_file_buffer is not None:
         else:
             # Display an error if no gemstones are detected
             st.error(error)
+
+# Close the main container div
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer (hidden)
 st.markdown(
