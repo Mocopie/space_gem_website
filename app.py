@@ -3,10 +3,77 @@ import requests
 from dotenv import load_dotenv
 import os
 import base64
+from io import BytesIO
+from PIL import Image, ImageDraw
 
-# Load environment variables
+# Load environment variables, including the Roboflow API Key
 load_dotenv()
-url = os.getenv("API_URL", "http://localhost:8501")  # Default fallback
+
+# Define your Roboflow API Key and model details
+ROBOFLOW_API_KEY = os.getenv(
+    "ROBOFLOW_API_KEY", "your-roboflow-api-key"
+)  # Replace with actual key
+ROBOFLOW_MODEL = "gemstones-2e1jx"
+ROBOFLOW_VERSION = "3"
+
+# Roboflow API Endpoint
+ROBOFLOW_URL = (
+    f"https://detect.roboflow.com/{ROBOFLOW_MODEL}/{ROBOFLOW_VERSION}"
+)
+
+
+def detect_gemstones(image_bytes):
+    """
+    Sends the image to Roboflow YOLOv8 API for gemstone detection and classification.
+    Returns predictions and an error message (if any).
+    """
+    response = requests.post(
+        ROBOFLOW_URL,
+        params={"api_key": ROBOFLOW_API_KEY},
+        files={"file": image_bytes},
+    )
+
+    if response.status_code != 200:
+        return None, "❌ Error: Unable to process image."
+
+    result = response.json()
+    if "predictions" not in result or len(result["predictions"]) == 0:
+        return None, "⚠️ No gemstone detected in the image."
+
+    return result, None
+
+
+def draw_boxes(image_bytes, predictions):
+    """
+    Draws bounding boxes around detected gemstones with their classifications.
+    Returns the modified image as bytes.
+    """
+    image = Image.open(BytesIO(image_bytes))
+    draw = ImageDraw.Draw(image)
+
+    for pred in predictions:
+        # Extract bounding box coordinates and gemstone classification
+        x, y, width, height = (
+            pred["x"],
+            pred["y"],
+            pred["width"],
+            pred["height"],
+        )
+        gemstone_type = pred["class"]
+
+        # Calculate the rectangle coordinates for the bounding box
+        x0, y0 = x - width / 2, y - height / 2
+        x1, y1 = x + width / 2, y + height / 2
+
+        # Draw the bounding box and label
+        draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
+        draw.text((x0, y0 - 10), gemstone_type, fill="red")
+
+    # Save the modified image to a buffer and return its bytes
+    output_buffer = BytesIO()
+    image.save(output_buffer, format="PNG")
+    return output_buffer.getvalue()
+
 
 # Set Streamlit page configuration
 st.set_page_config(
@@ -20,11 +87,11 @@ BACKGROUND_IMAGE_PATH = "images/background.png"  # Space background image
 LOGO_IMAGE_PATH = "images/logo.png"  # Logo of the app
 
 
-# Function to apply space and gemstone background color and responsive styling
-# as well as css code to streamline design and responsiveness.
 def set_background_color(apply_background=True):
+    """
+    Configures the app's background image and responsive CSS styling.
+    """
     if apply_background:
-        # Read and encode the space background image to base64_image
         with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
             image_base64 = base64.b64encode(image_file.read()).decode()
 
@@ -57,17 +124,29 @@ def set_background_color(apply_background=True):
                 text-align: center;
                 font-family: 'Arial', sans-serif;
             }}
-            .uploaded-image {{
-                margin: 0 auto;
+            .spinner-container {{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh; /* Take up full height of the viewport */ 
+                text-align: center;rem;
+            }}
+            .processed-image {{
                 display: block;
-                max-width: 80%;
+                margin: 0 auto;
+                max-width: 50%; /* Adjust the width for responsiveness */
                 height: auto;
                 border-radius: 12px;
                 box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
             }}
-            /* Styling for gemstone inspired buttons */
+            .prediction-text {{
+                text-align: center;
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-top: 10px;
+            }}
             .stButton>button {{
-                background-color: #4e73df; /* Sapphire Blue */
+                background-color: #4e73df;
                 border-radius: 50px;
                 color: white;
                 font-weight: bold;
@@ -75,7 +154,7 @@ def set_background_color(apply_background=True):
                 transition: all 0.3s ease;
             }}
             .stButton>button:hover {{
-                background-color: #2e59a3; /* Darker Sapphire Blue on hover */
+                background-color: #2e59a3;
             }}
             /* Media Queries for responsiveness */
             @media (max-width: 768px) {{
@@ -123,50 +202,35 @@ def set_background_color(apply_background=True):
         )
 
 
-# Apply space and gemstone-inspired background and colors
-set_background_color(apply_background=False)
+# Apply the background styling
+set_background_color(apply_background=True)
 
 # Logo and Title Section
 if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
         logo_base64 = base64.b64encode(logo_file.read()).decode()
 
-    # #### v1
-    # st.markdown(
-    #     f"""
-    #         <div style="text-align: center; padding: 20px;">
-    #             <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
-    #         </div>
-    #         <div style="text-align: center; padding-top: 20px;">
-    #             <h1 style="color: #333333; font-size: 3rem; margin: 10px;">Space Gem 💎</h1>
-    #             <p style="color: #555555; font-size: 1.2rem;">Identify Your Precious Gemstone</p>
-    #         </div>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
-
-    #### v2
     st.markdown(
         f"""
-            <div style="text-align: center; padding: 20px;">
-                <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
-            </div>
-            <div style="text-align: center; padding-top: 20px;">
-                <p style="color: #555555; font-size: 1.2rem;">Identify Your Gemstone</p>
-            </div>
+        <div style="text-align: center; padding: 20px;">
+            <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
+        </div>
+        <div style="text-align: center; padding-top: 20px;">
+            <h4 style="color: #333333; font-size: 1.5rem;">Identify Your Gemstone</h4>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-# separation line
+# Separation line
 st.markdown("___")
 
-# Separation line with cosmic sparkle
+# File uploader section with centered instructions
 st.markdown(
     """
-        <div style="text-align: center;">
-            <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-        </div>
+    <div style="text-align: center;">
+        <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+    </div>
     """,
     unsafe_allow_html=True,
 )
@@ -176,45 +240,55 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
-# Handle file upload and show result
-if img_file_buffer is not None:
+
+# Handle file upload and processing
+if img_file_buffer:
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
-        # Analyzing the gemstone
-        with st.spinner("✨ Analyzing the gemstone..."):
-            img_bytes = img_file_buffer.getvalue()
-            res = requests.post(url + "/upload_image", files={"img": img_bytes})
+        img_bytes = img_file_buffer.getvalue()
+        # with st.spinner("✨ Analyzing the gemstone..."):
+        #     result, error = detect_gemstones(img_bytes)
+        # Center the spinner using custom HTML and CSS
+        with st.markdown(
+            '<div class="spinner-container">', unsafe_allow_html=True
+        ):
+            with st.spinner("✨ Analyzing the gemstone..."):
+                result, error = detect_gemstones(img_bytes)
 
-            # Show results
-            if res.status_code == 200:
-                st.image(
-                    res.content,
-                    caption="🔍 Identified Gemstone",
-                    use_column_width=True,
-                )
-            else:
+        if result:
+            for pred in result["predictions"]:
                 st.markdown(
-                    """
-                        <div style="text-align: center;">
-                            <p style="color: red; font-size: 1rem;">Oops! Something went wrong. Try again.</p>
-                        </div>
-                    """,
+                    f"""
+                <div style="text-align: center;">
+                    <h4>💎 Detected Gemstone:</h4>
+                    <div>👉 {pred['class'].capitalize()} (Confidence: {pred['confidence']:.2f})</div>
+                </div>
+                """,
                     unsafe_allow_html=True,
                 )
 
-        # Show uploaded image with styling
-        st.markdown(
-            """
+            # Show the processed image with bounding boxes
+            processed_image = draw_boxes(img_bytes, result["predictions"])
+            # st.image(
+            #     processed_image,
+            #     caption="Processed Image with Bounding Boxes",
+            #     use_column_width=True,  # Makes the image responsive
+            #     output_format="PNG",
+            # )  # Display the processed image
+
+            st.markdown(
+                f"""
                 <div style="text-align: center;">
-                    <img src="data:image/png;base64,{base64_image}" alt="Uploaded Image" class="uploaded-image" />
-                    <p style="color: #333333; font-size: 1rem; margin-top: 10px;">Uploaded Image ☝️</p>
+                    <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
                 </div>
-            """.format(
-                base64_image=base64.b64encode(img_file_buffer.read()).decode()
-            ),
-            unsafe_allow_html=True,
-        )
+                """,
+                unsafe_allow_html=True,
+            )
+
+        else:
+            # Display an error if no gemstones are detected
+            st.error(error)
 
 # Footer (hidden)
 st.markdown(
