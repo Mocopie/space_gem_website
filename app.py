@@ -110,7 +110,7 @@ def set_background_color(apply_background=True):
                 background-position: center;
                 background-attachment: fixed;
                 color: white;
-                height: 100vh;
+                height: 100%;
                 padding: 0;
             }}
             .main {{
@@ -123,6 +123,9 @@ def set_background_color(apply_background=True):
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
                 color: #333;
                 z-index: 1;
+                min-height: 100vh;
+                flex-direction: column;
+                justify-content: space-between;
                 # overflow-x: hidden; /* prevent horizontal scroll */
                 # overflow-y: auto; /* prevent vertical scroll */
             }}
@@ -276,13 +279,6 @@ if img_file_buffer is not None:
 
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
-            # st.image(
-            #     processed_image,
-            #     caption="Processed Image with Bounding Boxes",
-            #     use_column_width=True,  # Makes the image responsive
-            #     output_format="PNG",
-            # )  # Display the processed image
-
             st.markdown(
                 f"""
                 <div style="text-align: center;">
