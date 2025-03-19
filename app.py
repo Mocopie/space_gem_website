@@ -14,7 +14,6 @@ from PIL import Image, ImageDraw
 # ROBOFLOW_API_KEY = os.getenv(
 #     "ROBOFLOW_API_KEY", "your-roboflow-api-key"
 # )  # Replace with actual key
-#
 
 # Use Streamlit secrets to get the API key
 ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
@@ -210,7 +209,7 @@ def set_background_color(apply_background=True):
 
 
 # Apply the background styling
-set_background_color(apply_background=False)
+set_background_color(apply_background=True)
 
 # Logo and Title Section
 if os.path.exists(LOGO_IMAGE_PATH):
@@ -249,14 +248,11 @@ with col2:
 
 
 # Handle file upload and processing
-if img_file_buffer:
+if img_file_buffer is not None:
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
         img_bytes = img_file_buffer.getvalue()
-        # with st.spinner("✨ Analyzing the gemstone..."):
-        #     result, error = detect_gemstones(img_bytes)
-        # Center the spinner using custom HTML and CSS
         with st.markdown(
             '<div class="spinner-container">', unsafe_allow_html=True
         ):
