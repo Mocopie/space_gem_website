@@ -212,7 +212,7 @@ def set_background_color(apply_background=True):
 
 
 # Apply the background styling
-set_background_color(apply_background=True)
+set_background_color(apply_background=False)
 
 # Wrap the main content in the styled container
 # Wrap the main content inside a white container using Streamlit's layout
