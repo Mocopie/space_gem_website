@@ -21,13 +21,13 @@ LOGO_IMAGE_PATH = "images/logo.png"  # Logo of the app
 
 
 # Function to apply space and gemstone background color and responsive styling
+# as well as css code to streamline design and responsiveness.
 def set_background_color(apply_background=True):
     if apply_background:
         # Read and encode the space background image to base64_image
         with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
             image_base64 = base64.b64encode(image_file.read()).decode()
 
-        # Inject the base64 string into the CSS for the background
         st.markdown(
             f"""
             <style>
@@ -131,13 +131,27 @@ if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
         logo_base64 = base64.b64encode(logo_file.read()).decode()
 
+    # #### v1
+    # st.markdown(
+    #     f"""
+    #         <div style="text-align: center; padding: 20px;">
+    #             <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
+    #         </div>
+    #         <div style="text-align: center; padding-top: 20px;">
+    #             <h1 style="color: #333333; font-size: 3rem; margin: 10px;">Space Gem 💎</h1>
+    #             <p style="color: #555555; font-size: 1.2rem;">Identify Your Precious Gemstone</p>
+    #         </div>
+    #     """,
+    #     unsafe_allow_html=True,
+    # )
+
+    #### v2
     st.markdown(
         f"""
             <div style="text-align: center; padding: 20px;">
                 <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
             </div>
             <div style="text-align: center; padding-top: 20px;">
-                <h1 style="color: #333333; font-size: 3rem; margin: 10px;">Space Gem 💎</h1>
                 <p style="color: #555555; font-size: 1.2rem;">Identify Your Precious Gemstone</p>
             </div>
         """,
