@@ -1,18 +1,25 @@
 import streamlit as st
 import requests
-from dotenv import load_dotenv
+
+# from dotenv import load_dotenv
 import os
 import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
 
-# Load environment variables, including the Roboflow API Key
-load_dotenv()
+# # Load environment variables, including the Roboflow API Key
+# load_dotenv()
+#
+# # Define your Roboflow API Key and model details
+# ROBOFLOW_API_KEY = os.getenv(
+#     "ROBOFLOW_API_KEY", "your-roboflow-api-key"
+# )  # Replace with actual key
+#
 
-# Define your Roboflow API Key and model details
-ROBOFLOW_API_KEY = os.getenv(
-    "ROBOFLOW_API_KEY", "your-roboflow-api-key"
-)  # Replace with actual key
+# Use Streamlit secrets to get the API key
+ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
+
+# Defining the model details
 ROBOFLOW_MODEL = "gemstones-2e1jx"
 ROBOFLOW_VERSION = "3"
 
@@ -203,7 +210,7 @@ def set_background_color(apply_background=True):
 
 
 # Apply the background styling
-set_background_color(apply_background=True)
+set_background_color(apply_background=False)
 
 # Logo and Title Section
 if os.path.exists(LOGO_IMAGE_PATH):
