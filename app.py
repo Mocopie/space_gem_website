@@ -152,7 +152,7 @@ if os.path.exists(LOGO_IMAGE_PATH):
                 <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
             </div>
             <div style="text-align: center; padding-top: 20px;">
-                <p style="color: #555555; font-size: 1.2rem;">Identify Your Precious Gemstone</p>
+                <p style="color: #555555; font-size: 1.2rem;">Identify Your Gemstone</p>
             </div>
         """,
         unsafe_allow_html=True,
