@@ -215,8 +215,6 @@ def set_background_color(apply_background=True):
 set_background_color(apply_background=True)
 
 with st.container():
-    st.markdown('<div class="main">', unsafe_allow_html=True)
-
     # Logo and Title section
     if os.path.exists(LOGO_IMAGE_PATH):
         with open(LOGO_IMAGE_PATH, "rb") as logo_file:
@@ -306,5 +304,3 @@ with st.container():
         """,
         unsafe_allow_html=True,
     )
-
-    st.markdown("</div>", unsafe_allow_html=True),
