@@ -228,6 +228,9 @@ st.markdown(
         <div style="text-align: center; padding-top: 20px;">
             <h4 style="color: #333333; font-size: 1.5rem;">Identify Your Gemstone</h4>
         </div>
+    <div style="text-align: center;">
+        <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+    </div>
     </div>
         """,
     unsafe_allow_html=True,
@@ -237,14 +240,14 @@ st.markdown(
 # st.markdown("___")
 
 # File uploader section with centered instructions
-st.markdown(
-    """
-    <div style="text-align: center;">
-        <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     """
+#     <div style="text-align: center;">
+#         <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
