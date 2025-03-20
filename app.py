@@ -89,8 +89,8 @@ st.set_page_config(
 )
 
 # Paths to images inside the 'images' folder
-BACKGROUND_IMAGE_PATH = "images/background.png"  # Space background image
-LOGO_IMAGE_PATH = "images/logo.png"  # Logo of the app
+BACKGROUND_IMAGE_PATH = "images/background.png"
+LOGO_IMAGE_PATH = "images/logo.png"
 
 
 def set_background_color(apply_background=True):
@@ -234,18 +234,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Separation line
-# st.markdown("___")
-
-# File uploader section with centered instructions
-# st.markdown(
-#     """
-#     <div style="text-align: center;">
-#         <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-#     </div>
-#     """,
-#     unsafe_allow_html=True,
-# )
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
