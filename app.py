@@ -221,7 +221,6 @@ if os.path.exists(LOGO_IMAGE_PATH):
 
 st.markdown(
     f"""
-    <div class="main">
         <div style="text-align: center; padding: 20px;">
             <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
         </div>
@@ -230,7 +229,6 @@ st.markdown(
         </div>
     <div style="text-align: center;">
         <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-    </div>
     </div>
         """,
     unsafe_allow_html=True,
@@ -261,7 +259,7 @@ if img_file_buffer is not None:
     with col2:
         img_bytes = img_file_buffer.getvalue()
         with st.markdown(
-            '<div class="spinner-container main">', unsafe_allow_html=True
+            '<div class="spinner-container">', unsafe_allow_html=True
         ):
             with st.spinner("✨ Analyzing the gemstone..."):
                 result, error = detect_gemstones(img_bytes)
