@@ -292,7 +292,7 @@ if img_file_buffer is not None:
         else:
             # Display an error if no gemstones are detected
             st.error(error)
-
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer (hidden)
 st.markdown(
