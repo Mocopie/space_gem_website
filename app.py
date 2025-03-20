@@ -249,12 +249,10 @@ st.markdown(
 #     unsafe_allow_html=True,
 # )
 
-st.markdown('<div class="main">')
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
-st.markdown("</div>")
 
 # Handle file upload and processing
 if img_file_buffer is not None:
