@@ -12,7 +12,7 @@ streamlit
 requests
 python-dotenv
 
-# to work with YOLOv8
+# to work with YOLO
 ultralytics
 opencv-python
 roboflow
