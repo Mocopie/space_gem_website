@@ -109,106 +109,24 @@ def set_background_color(apply_background=True):
                 background-size: cover;
                 background-position: center;
                 background-attachment: fixed;
-                color: white;
-                height: 100%;
                 padding: 0;
+                margin: 0;
             }}
             .main {{
                 max-width: 1000px;
-                width: 90%;
-                margin: 0 auto;
+                margin: 20px auto;
                 background-color: rgba(255, 255, 255, 0.8);
-                padding: 20px;
+                padding: 30px;
                 border-radius: 8px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-                color: #333;
-                z-index: 1;
-                min-height: 100vh;
-                flex-direction: column;
-                justify-content: space-between;
-                # overflow-x: hidden; /* prevent horizontal scroll */
-                # overflow-y: auto; /* prevent vertical scroll */
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             }}
-            h1, h4, p {{
-                text-align: center;
-                font-family: 'Arial', sans-serif;
-            }}
-            .spinner-container {{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh; /* Take up full height of the viewport */ 
-                text-align: center;rem;
-            }}
-            .processed-image {{
-                display: block;
-                margin: 0 auto;
-                max-width: 50%; /* Adjust the width for responsiveness */
-                height: auto;
-                border-radius: 12px;
-                box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-            }}
-            .prediction-text {{
-                text-align: center;
-                font-size: 1.2rem;
-                font-weight: bold;
-                margin-top: 10px;
-            }}
-            .stButton>button {{
-                background-color: #4e73df;
-                border-radius: 50px;
-                color: white;
-                font-weight: bold;
-                padding: 10px 30px;
-                transition: all 0.3s ease;
-            }}
-            .stButton>button:hover {{
-                background-color: #2e59a3;
-            }}
-            /* Media Queries for responsiveness */
-            @media (max-width: 768px) {{
-                h1 {{
-                    font-size: 2.5rem;
-                }}
-                h4 {{
-                    font-size: 1.2rem;
-                }}
-                p {{
-                    font-size: 1rem;
-                }}
-                .uploaded-image {{
-                    max-width: 90%;
-                }}
-            }}
-            /* Webkit Browsers (Chrome, Chromium, Safari, Edge) */
-            ::-webkit-scrollbar {{
-                width: 8px;
-                height: 8px;
-                background: rgba(255, 255, 255, 0.9); /* Background matches the content */
-            }}
-            ::-webkit-scrollbar-thumb {{
-                background-color: rgba(255, 255, 255, 0.9); /* Thumb color matches the content */
-                border-radius: 10px;
-            }}
-            ::-webkit-scrollbar-thumb:hover {{
-                background-color: rgba(255, 255, 255, 0.7); /* Slightly darker on hover */
-            }}
-            ::-webkit-scrollbar-track {{
-                background: rgba(255, 255, 255, 0);  /* Invisible track */
-            }}
-            
-            /* Firefox */
-            * {{
-                scrollbar-width: thin;  /* Set the width of the scrollbar */
-                scrollbar-color: rgba(255, 255, 255, 0.9) rgba(255, 255, 255, 0); /* Thumb and track color */
-            }}
-            *:hover {{
-                scrollbar-color: rgba(255, 255, 255, 0.7) rgba(255, 255, 255, 0); /* Darker thumb on hover */
-            }}
-            </style>
+        </style>
             """,
             unsafe_allow_html=True,
         )
+
+        # Wrapping the content in a container
+        st.markdown('<div class="main">', unsafe_allow_html=True)
 
 
 # Apply the background styling
@@ -297,3 +215,5 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+st.markdown("</div>", unsafe_allow_html=True)
