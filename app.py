@@ -247,6 +247,8 @@ st.markdown(
 #     unsafe_allow_html=True,
 # )
 
+st.markdown('<div class="main">', unsafe_allow_html=True)
+
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
@@ -304,3 +306,5 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+st.markdown("</div>", unsafe_allow_html=True)
