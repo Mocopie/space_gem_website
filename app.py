@@ -265,6 +265,8 @@ if img_file_buffer is not None:
         ):
             with st.spinner("✨ Analyzing the gemstone..."):
                 result, error = detect_gemstones(img_bytes)
+            # Close the spinner div here after the spinner completes
+        st.markdown("</div>", unsafe_allow_html=True)
 
         if result:
             for pred in result["predictions"]:
