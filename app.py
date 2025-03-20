@@ -212,7 +212,7 @@ def set_background_color(apply_background=True):
 
 
 # Apply the background styling
-set_background_color(apply_background=False)
+set_background_color(apply_background=True)
 
 # Logo and Title section
 if os.path.exists(LOGO_IMAGE_PATH):
