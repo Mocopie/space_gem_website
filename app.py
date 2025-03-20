@@ -214,6 +214,9 @@ def set_background_color(apply_background=True):
 # Apply the background styling
 set_background_color(apply_background=True)
 
+st.markdown('<div class="main">', unsafe_allow_html=True)
+
+
 # Logo and Title section
 if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
@@ -247,7 +250,6 @@ st.markdown(
 #     unsafe_allow_html=True,
 # )
 
-st.markdown('<div class="main">', unsafe_allow_html=True)
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -295,7 +297,6 @@ if img_file_buffer is not None:
         else:
             # Display an error if no gemstones are detected
             st.error(error)
-        st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer (hidden)
 st.markdown(
