@@ -120,13 +120,11 @@ def set_background_color(apply_background=True):
                 border-radius: 8px;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
             }}
-        </style>
+            </style>
+            <div class="main">
             """,
             unsafe_allow_html=True,
         )
-
-        # Wrapping the content in a container
-        st.markdown('<div class="main">', unsafe_allow_html=True)
 
 
 # Apply the background styling
@@ -206,6 +204,8 @@ if img_file_buffer is not None:
             # Display an error if no gemstones are detected
             st.error(error)
 
+st.markdown("</div>", unsafe_allow_html=True)
+
 # Footer (hidden)
 st.markdown(
     """
@@ -215,5 +215,3 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-st.markdown("</div>", unsafe_allow_html=True)
