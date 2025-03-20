@@ -1,31 +1,23 @@
 import streamlit as st
 import requests
-
-# from dotenv import load_dotenv
 import os
 import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
 
-# # Load environment variables, including the Roboflow API Key
-# load_dotenv()
-#
-# # Define your Roboflow API Key and model details
-# ROBOFLOW_API_KEY = os.getenv(
-#     "ROBOFLOW_API_KEY", "your-roboflow-api-key"
-# )  # Replace with actual key
-
 # Use Streamlit secrets to get the API key
 ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
 
-# Defining the model details
+# Define your Roboflow model details
 ROBOFLOW_MODEL = "gemstones-2e1jx"
 ROBOFLOW_VERSION = "3"
-
-# Roboflow API Endpoint
 ROBOFLOW_URL = (
     f"https://detect.roboflow.com/{ROBOFLOW_MODEL}/{ROBOFLOW_VERSION}"
 )
+
+# Paths to images inside the 'images' folder
+BACKGROUND_IMAGE_PATH = "images/background.png"  # Space background image
+LOGO_IMAGE_PATH = "images/logo.png"  # Logo of the app
 
 
 def detect_gemstones(image_bytes):
@@ -58,7 +50,6 @@ def draw_boxes(image_bytes, predictions):
     draw = ImageDraw.Draw(image)
 
     for pred in predictions:
-        # Extract bounding box coordinates and gemstone classification
         x, y, width, height = (
             pred["x"],
             pred["y"],
@@ -67,18 +58,54 @@ def draw_boxes(image_bytes, predictions):
         )
         gemstone_type = pred["class"]
 
-        # Calculate the rectangle coordinates for the bounding box
+        # Calculate bounding box coordinates
         x0, y0 = x - width / 2, y - height / 2
         x1, y1 = x + width / 2, y + height / 2
 
-        # Draw the bounding box and label
+        # Draw bounding box and label
         draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
         draw.text((x0, y0 - 10), gemstone_type, fill="red")
 
-    # Save the modified image to a buffer and return its bytes
     output_buffer = BytesIO()
     image.save(output_buffer, format="PNG")
     return output_buffer.getvalue()
+
+
+def set_background_and_container():
+    """
+    Configures the app's background image and creates a white container for the app's content.
+    """
+    with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
+        image_base64 = base64.b64encode(image_file.read()).decode()
+
+    st.markdown(
+        f"""
+        <style>
+        /* App background styling */
+        .stApp {{
+            background-image: url('data:image/jpeg;base64,{image_base64}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 0;
+            margin: 0;
+        }}
+
+        /* White container styling */
+        .main-container {{
+            max-width: 1100px; /* Centered app width */
+            margin: 50px auto;
+            background-color: rgba(255, 255, 255, 0.95); /* Transparent white */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Prevent overflow issues */
+        }}
+        </style>
+        <div class="main-container">
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # Set Streamlit page configuration
@@ -88,47 +115,8 @@ st.set_page_config(
     layout="wide",
 )
 
-# Paths to images inside the 'images' folder
-BACKGROUND_IMAGE_PATH = "images/background.png"  # Space background image
-LOGO_IMAGE_PATH = "images/logo.png"  # Logo of the app
-
-
-def set_background_color(apply_background=True):
-    """
-    Configures the app's background image and responsive CSS styling.
-    """
-    if apply_background:
-        with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
-            image_base64 = base64.b64encode(image_file.read()).decode()
-
-        st.markdown(
-            f"""
-            <style>
-            .stApp {{
-                background-image: url('data:image/jpeg;base64,{image_base64}');
-                background-size: cover;
-                background-position: center;
-                background-attachment: fixed;
-                padding: 0;
-                margin: 0;
-            }}
-            .main {{
-                max-width: 1000px;
-                margin: 20px auto;
-                background-color: rgba(255, 255, 255, 0.8);
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            }}
-            </style>
-            <div class="main">
-            """,
-            unsafe_allow_html=True,
-        )
-
-
-# Apply the background styling
-set_background_color(apply_background=True)
+# Apply the background styling and container
+set_background_and_container()
 
 # Logo and Title section
 if os.path.exists(LOGO_IMAGE_PATH):
@@ -137,31 +125,18 @@ if os.path.exists(LOGO_IMAGE_PATH):
 
 st.markdown(
     f"""
-        <div style="text-align: center; padding: 20px;">
-            <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
-        </div>
-        <div style="text-align: center; padding-top: 20px;">
-            <h4 style="color: #333333; font-size: 1.5rem;">Identify Your Gemstone</h4>
-        </div>
-        <div style="text-align: center;">
-            <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-        </div>
-        """,
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="200">
+    </div>
+    <div style="text-align: center; padding-top: 20px;">
+        <h4 style="color: #333333; font-size: 1.5rem;">Identify Your Gemstone</h4>
+    </div>
+    <div style="text-align: center;">
+        <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
-
-# Separation line
-# st.markdown("___")
-
-# File uploader section with centered instructions
-# st.markdown(
-#     """
-#     <div style="text-align: center;">
-#         <h4 style="color: #333333; font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-#     </div>
-#     """,
-#     unsafe_allow_html=True,
-# )
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -201,9 +176,9 @@ if img_file_buffer is not None:
             )
 
         else:
-            # Display an error if no gemstones are detected
             st.error(error)
 
+# Close the main container div
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer (hidden)
