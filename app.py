@@ -261,7 +261,7 @@ if img_file_buffer is not None:
     with col2:
         img_bytes = img_file_buffer.getvalue()
         with st.markdown(
-            '<div class="spinner-container">', unsafe_allow_html=True
+            '<div class="spinner-container main">', unsafe_allow_html=True
         ):
             with st.spinner("✨ Analyzing the gemstone..."):
                 result, error = detect_gemstones(img_bytes)
