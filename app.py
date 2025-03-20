@@ -71,42 +71,18 @@ def draw_boxes(image_bytes, predictions):
     return output_buffer.getvalue()
 
 
-def set_background_and_container():
-    """
-    Configures the app's background image and creates a white container for the app's content.
-    """
-    with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
-        image_base64 = base64.b64encode(image_file.read()).decode()
-
-    st.markdown(
-        f"""
-        <style>
-        /* App background styling */
-        .stApp {{
-            background-image: url('data:image/jpeg;base64,{image_base64}');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            padding: 0;
-            margin: 0;
-        }}
-
-        /* White container styling */
-        .main-container {{
-            max-width: 1100px; /* Centered app width */
-            margin: 50px auto;
-            background-color: rgba(255, 255, 255, 0.95); /* Transparent white */
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden; /* Prevent overflow issues */
-        }}
-        </style>
-        <div class="main-container">
-        """,
-        unsafe_allow_html=True,
-    )
-
+page_element = """
+<style>
+[data-testid="stAppViewContainer"]{
+  background-image: url("https://cdn.wallpapersafari.com/88/75/cLUQqJ.jpg");
+  background-size: cover;
+}
+[data-testid="stHeader"]{
+  background-color: rgba(0,0,0,0);
+}
+</style>
+"""
+st.markdown(page_element, unsafe_allow_html=True)
 
 # Set Streamlit page configuration
 st.set_page_config(
@@ -115,8 +91,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# Apply the background styling and container
-set_background_and_container()
 
 # Logo and Title section
 if os.path.exists(LOGO_IMAGE_PATH):
