@@ -258,14 +258,13 @@ if img_file_buffer is not None:
 
     with col2:
         img_bytes = img_file_buffer.getvalue()
-        # st.markdown("<div class='main'>", unsafe_allow_html=True)
-        # with st.markdown(
-        #     '<div class="spinner-container">', unsafe_allow_html=True
-        # ):
-        with st.spinner("✨ Analyzing the gemstone..."):
-            result, error = detect_gemstones(img_bytes)
-            # Close the spinner div here after the spinner completes
-        # st.markdown("</div>", unsafe_allow_html=True)
+        with st.markdown(
+            '<div class="spinner-container">', unsafe_allow_html=True
+        ):
+            with st.spinner("✨ Analyzing the gemstone..."):
+                result, error = detect_gemstones(img_bytes)
+                # Close the spinner div here after the spinner completes
+        st.markdown("</div>", unsafe_allow_html=True)
 
         if result:
             for pred in result["predictions"]:
