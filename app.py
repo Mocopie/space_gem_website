@@ -242,9 +242,6 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
-
-prediction = None
-
 # Handle file upload and processing
 if img_file_buffer is not None:
     col1, col2, col3 = st.columns([1, 2, 1])
