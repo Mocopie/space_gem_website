@@ -240,6 +240,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Use placeholders to control where the content is displayed
+image_placeholder = st.empty()  # Placeholder for the processed image
+output_placeholder = st.empty()  # Placeholder for the markdown content
+
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
@@ -271,16 +275,10 @@ if img_file_buffer is not None:
                     unsafe_allow_html=True,
                 )
 
-            # Show the processed image with bounding boxes
-            processed_image = draw_boxes(img_bytes, result["predictions"])
-            # st.markdown(
-            #     f"""
-            #         <div style="text-align: center;">
-            #             <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
-            #         </div>
-            #         """,
-            #     unsafe_allow_html=True,
-            # )
+            # Update the placeholders dynamically
+            with image_placeholder:
+                # Show the processed image with bounding boxes
+                processed_image = draw_boxes(img_bytes, result["predictions"])
 
         else:
             # Display an error if no gemstones are detected
@@ -336,16 +334,22 @@ if img_file_buffer is not None:
 
     with col2:
         # Display the AI output
-        st.markdown(output)
+        with output_placeholder:
+            st.markdown(output)
 
-    # Automatically scroll to the "scroll-here" anchor
-    scroll_script = """
-    <script>
-        document.getElementById('scroll-here').scrollIntoView({ behavior: 'smooth' });
-    </script>
-    """
-    st.components.v1.html(scroll_script, height=0)
-
+    # Add a placeholder-triggered effect to auto-focus the output section
+    if img_file_buffer is not None and result is not None:
+        st.markdown(
+            """
+            <script>
+                const scrollToElement = document.querySelectorAll('.stImage, .stMarkdown')[0];
+                if (scrollToElement) {
+                    scrollToElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            </script>
+            """,
+            unsafe_allow_html=True,
+        )
 # Footer (hidden)
 st.markdown(
     """
