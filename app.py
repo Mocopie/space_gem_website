@@ -253,6 +253,7 @@ if img_file_buffer is not None:
 
         if result:
             for pred in result["predictions"]:
+                prediction = pred['class']
                 st.markdown(
                     f"""
                     <div style="text-align: center;">
@@ -262,7 +263,7 @@ if img_file_buffer is not None:
                     """,
                     unsafe_allow_html=True,
                 )
-
+                prediction = pred['class']
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
             st.markdown(
@@ -273,8 +274,8 @@ if img_file_buffer is not None:
                     """,
                 unsafe_allow_html=True,
             )
-            prediction = pred['class']
-            return prediction
+
+
         else:
             # Display an error if no gemstones are detected
             st.error(error)
@@ -295,12 +296,10 @@ def ask_gem_AI(prediction):
             A short explanation how to preserve it'''},
             {"role": "user", "content": prompt}
         ],
-#        max_tokens=200
     )
-    print(repr(prompt))
     # Return the AI response
     return response.choices[0].message.content
-output = ask_gem_AI()
+output = ask_gem_AI(prediction)
 st.markdown(output)
 # Footer (hidden)
 st.markdown(
