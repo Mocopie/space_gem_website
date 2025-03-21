@@ -16,3 +16,6 @@ python-dotenv
 ultralytics
 opencv-python
 roboflow
+
+#openai
+openai
