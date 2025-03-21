@@ -285,35 +285,6 @@ if img_file_buffer is not None:
             # Display an error if no gemstones are detected
             st.error(error)
 
-
-# # GEM_AI
-# def ask_gem_AI(prediction):
-#     # Prompt for the AI model
-#     prompt = prediction
-#     response = openai.chat.completions.create(
-#         model="gpt-4-turbo",
-#         messages=[
-#             {
-#                 "role": "system",
-#                 "content": """You are an expert gemologist. I will send you a name of a gem.
-#             Give me for it:
-#             A short explanation about the gem
-#             Rarity
-#             Where in the world can these be found
-#             Price range
-#             A short explanation how to preserve it""",
-#             },
-#             {"role": "user", "content": prompt},
-#         ],
-#     )
-#     # Return the AI response
-#     return response.choices[0].message.content
-#
-#
-# output = ask_gem_AI(prediction)
-#
-# st.markdown(output)
-
 # Check if prediction exists before calling GEM_AI
 if prediction:
     # GEM_AI
@@ -343,7 +314,28 @@ if prediction:
         return response["choices"][0]["message"]["content"]
 
     output = ask_gem_AI(prediction)
-    st.markdown(output)
+    # st.markdown(output)
+    # Use Streamlit columns to display content side by side
+    col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
+
+    with col1:
+        # Display the processed image
+        st.image(
+            processed_image,
+            caption="Processed Gemstone Image",
+            use_column_width=True,
+        )
+
+    with col2:
+        # Display the AI output
+        st.markdown(
+            f"""
+            <div style="text-align: justify;">
+                {output}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # Footer (hidden)
 st.markdown(
