@@ -8,13 +8,16 @@ from io import BytesIO
 from PIL import Image, ImageDraw
 import openai
 
-# # Load environment variables, including the Roboflow API Key
+# Load environment variables, including the Roboflow API Key
 # load_dotenv()
-#
-# # Define your Roboflow API Key and model details
+
+# Define your Roboflow API Key and model details
 # ROBOFLOW_API_KEY = os.getenv(
-#     "ROBOFLOW_API_KEY", "your-roboflow-api-key"
+# "ROBOFLOW_API_KEY", "your-roboflow-api-key"
 # )  # Replace with actual key
+
+# openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 # Use Streamlit secrets to get the API keys
 ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
@@ -242,6 +245,9 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
+# Define the variable prediction with a default value
+prediction = None
+
 # Handle file upload and processing
 if img_file_buffer is not None:
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -280,33 +286,64 @@ if img_file_buffer is not None:
             st.error(error)
 
 
-# GEM_AI
-def ask_gem_AI(prediction):
-    # Prompt for the AI model
-    prompt = prediction
-    response = openai.chat.completions.create(
-        model="gpt-4-turbo",
-        messages=[
-            {
-                "role": "system",
-                "content": """You are an expert gemologist. I will send you a name of a gem.
-            Give me for it:
-            A short explanation about the gem
-            Rarity
-            Where in the world can these be found
-            Price range
-            A short explanation how to preserve it""",
-            },
-            {"role": "user", "content": prompt},
-        ],
-    )
-    # Return the AI response
-    return response.choices[0].message.content
+# # GEM_AI
+# def ask_gem_AI(prediction):
+#     # Prompt for the AI model
+#     prompt = prediction
+#     response = openai.chat.completions.create(
+#         model="gpt-4-turbo",
+#         messages=[
+#             {
+#                 "role": "system",
+#                 "content": """You are an expert gemologist. I will send you a name of a gem.
+#             Give me for it:
+#             A short explanation about the gem
+#             Rarity
+#             Where in the world can these be found
+#             Price range
+#             A short explanation how to preserve it""",
+#             },
+#             {"role": "user", "content": prompt},
+#         ],
+#     )
+#     # Return the AI response
+#     return response.choices[0].message.content
+#
+#
+# output = ask_gem_AI(prediction)
+#
+# st.markdown(output)
 
+# Check if prediction exists before calling GEM_AI
+if prediction:
+    # GEM_AI
+    def ask_gem_AI(prediction):
+        # Prompt for the AI model
+        prompt = prediction
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            # model="gpt-4-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are an expert gemologist. I will send you a name of a gem.
+                    Give me for it:
+                    A short explanation about the gem
+                    Rarity
+                    Where in the world can these be found
+                    Price range
+                    A short explanation how to preserve it""",
+                },
+                {"role": "user", "content": prompt},
+            ],
+        )
+        # Return the AI response
+        # return response.choices[0].message.content
+        # Return the AI response
+        return response["choices"][0]["message"]["content"]
 
-output = ask_gem_AI(prediction)
-
-st.markdown(output)
+    output = ask_gem_AI(prediction)
+    st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
