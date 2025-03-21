@@ -338,13 +338,10 @@ if img_file_buffer is not None:
         # Display the AI output
         st.markdown(output)
 
-    # Add JavaScript to scroll down to this section
+    # Automatically scroll to the "scroll-here" anchor
     scroll_script = """
     <script>
-        var element = window.parent.document.getElementsByClassName('stColumns')[0];
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById('scroll-here').scrollIntoView({ behavior: 'smooth' });
     </script>
     """
     st.components.v1.html(scroll_script, height=0)
