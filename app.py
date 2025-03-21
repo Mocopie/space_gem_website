@@ -6,6 +6,7 @@ import os
 import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
+import openai
 
 # # Load environment variables, including the Roboflow API Key
 # load_dotenv()
@@ -15,8 +16,9 @@ from PIL import Image, ImageDraw
 #     "ROBOFLOW_API_KEY", "your-roboflow-api-key"
 # )  # Replace with actual key
 
-# Use Streamlit secrets to get the API key
+# Use Streamlit secrets to get the API keys
 ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Defining the model details
 ROBOFLOW_MODEL = "gemstones-2e1jx"
@@ -137,7 +139,7 @@ def set_background_color(apply_background=True):
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100vh; /* Take up full height of the viewport */ 
+                height: 100vh; /* Take up full height of the viewport */
                 text-align: center;rem;
             }}
             .processed-image {{
@@ -196,7 +198,7 @@ def set_background_color(apply_background=True):
             ::-webkit-scrollbar-track {{
                 background: rgba(255, 255, 255, 0);  /* Invisible track */
             }}
-            
+
             /* Firefox */
             * {{
                 scrollbar-width: thin;  /* Set the width of the scrollbar */
@@ -271,11 +273,35 @@ if img_file_buffer is not None:
                     """,
                 unsafe_allow_html=True,
             )
-
+            prediction = pred['class']
+            return prediction
         else:
             # Display an error if no gemstones are detected
             st.error(error)
 
+# GEM_AI
+def ask_gem_AI(prediction):
+    # Prompt for the AI model
+    prompt = prediction
+    response = openai.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[
+            {"role": "system", "content": '''You are an expert gemologist. I will send you a name of a gem.
+            Give me for it:
+            A short explanation about the gem
+            Rarity
+            Where in the world can these be found
+            Price range
+            A short explanation how to preserve it'''},
+            {"role": "user", "content": prompt}
+        ],
+#        max_tokens=200
+    )
+    print(repr(prompt))
+    # Return the AI response
+    return response.choices[0].message.content
+output = ask_gem_AI()
+st.markdown(output)
 # Footer (hidden)
 st.markdown(
     """
