@@ -7,7 +7,7 @@ import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
 
-# import openai
+import openai
 
 # Load environment variables, including the Roboflow API Key
 # load_dotenv()
@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw
 # "ROBOFLOW_API_KEY", "your-roboflow-api-key"
 # )  # Replace with actual key
 
-# openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 # Use Streamlit secrets to get the API keys
@@ -240,7 +240,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
@@ -277,40 +276,40 @@ if img_file_buffer is not None:
         else:
             # Display an error if no gemstones are detected
             st.error(error)
-    #
-    # # Check if prediction exists before calling GEM_AI
-    # if prediction:
-    #     # GEM_AI
-    #     def ask_gem_AI(prediction):
-    #         # Prompt for the AI model
-    #         prompt = prediction
-    #         response = openai.ChatCompletion.create(
-    #             model="gpt-3.5-turbo",
-    #             # model="gpt-4-turbo",
-    #             # model="gpt-4",
-    #             messages=[
-    #                 {
-    #                     "role": "system",
-    #                     "content": """You are an expert gemologist. I will send you a name of a gem.
-    #                     Give me for it:
-    #                     A short explanation about the gem
-    #                     Rarity
-    #                     Where in the world can these be found
-    #                     Price range
-    #                     A short explanation how to preserve it""",
-    #                 },
-    #                 {"role": "user", "content": prompt},
-    #             ],
-    #         )
-    #         # Return the AI response
-    #         # return response.choices[0].message.content
-    #         # Return the AI response
-    #         return response["choices"][0]["message"]["content"]
-    #
-    #     output = ask_gem_AI(prediction)
+
+    # Check if prediction exists before calling GEM_AI
+    if prediction:
+        # GEM_AI
+        def ask_gem_AI(prediction):
+            # Prompt for the AI model
+            prompt = prediction
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                # model="gpt-4-turbo",
+                # model="gpt-4",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": """You are an expert gemologist. I will send you a name of a gem.
+                        Give me for it:
+                        A short explanation about the gem
+                        Rarity
+                        Where in the world can these be found
+                        Price range
+                        A short explanation how to preserve it""",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+            )
+            # Return the AI response
+            # return response.choices[0].message.content
+            # Return the AI response
+            return response["choices"][0]["message"]["content"]
+
+        output = ask_gem_AI(prediction)
 
     # to test css:
-    output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+    # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
@@ -319,10 +318,10 @@ if img_file_buffer is not None:
         # Display the processed image
         st.markdown(
             f"""
-                    <div style="text-align: center;">
-                        <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
-                    </div>
-                    """,
+            <div style="text-align: center;">
+                <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
+            </div>
+            """,
             unsafe_allow_html=True,
         )
 
