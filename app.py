@@ -263,7 +263,7 @@ if img_file_buffer is not None:
                     """,
                     unsafe_allow_html=True,
                 )
-                prediction = pred['class']
+
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
             st.markdown(
