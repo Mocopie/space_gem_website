@@ -337,14 +337,17 @@ if img_file_buffer is not None:
     with col2:
         # Display the AI output
         st.markdown(output)
-        # st.markdown(
-        #     f"""
-        #     <div style="text-align: justify;">
-        #         {output}
-        #     </div>
-        #     """,
-        #     unsafe_allow_html=True,
-        # )
+
+    # Add JavaScript to scroll down to this section
+    scroll_script = """
+    <script>
+        var element = window.parent.document.getElementsByClassName('stColumns')[0];
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    """
+    st.components.v1.html(scroll_script, height=0)
 
 # Footer (hidden)
 st.markdown(
