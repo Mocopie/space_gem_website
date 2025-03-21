@@ -242,6 +242,9 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
+
+prediction = None
+
 # Handle file upload and processing
 if img_file_buffer is not None:
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -253,7 +256,7 @@ if img_file_buffer is not None:
 
         if result:
             for pred in result["predictions"]:
-                prediction = pred['class']
+                prediction = pred["class"]
                 st.markdown(
                     f"""
                     <div style="text-align: center;">
@@ -275,10 +278,10 @@ if img_file_buffer is not None:
                 unsafe_allow_html=True,
             )
 
-
         else:
             # Display an error if no gemstones are detected
             st.error(error)
+
 
 # GEM_AI
 def ask_gem_AI(prediction):
@@ -287,20 +290,27 @@ def ask_gem_AI(prediction):
     response = openai.chat.completions.create(
         model="gpt-4-turbo",
         messages=[
-            {"role": "system", "content": '''You are an expert gemologist. I will send you a name of a gem.
+            {
+                "role": "system",
+                "content": """You are an expert gemologist. I will send you a name of a gem.
             Give me for it:
             A short explanation about the gem
             Rarity
             Where in the world can these be found
             Price range
-            A short explanation how to preserve it'''},
-            {"role": "user", "content": prompt}
+            A short explanation how to preserve it""",
+            },
+            {"role": "user", "content": prompt},
         ],
     )
     # Return the AI response
     return response.choices[0].message.content
+
+
 output = ask_gem_AI(prediction)
+
 st.markdown(output)
+
 # Footer (hidden)
 st.markdown(
     """
