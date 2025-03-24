@@ -283,9 +283,6 @@ if img_file_buffer is not None:
                 unsafe_allow_html=True,
             )
 
-    # Show the processed image with bounding boxes
-    processed_image = draw_boxes(img_bytes, result["predictions"])
-
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
 
