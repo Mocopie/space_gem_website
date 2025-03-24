@@ -292,7 +292,7 @@ if img_file_buffer is not None:
                         "role": "system",
                         "content": """You are an expert gemologist.
                         I will send you the name of a gem.
-                        Respond with:
+                        Respond in a markdown format with:
                         A short presentation about the gem
                         Rarity
                         Where in the world can these be found
