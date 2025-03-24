@@ -231,10 +231,10 @@ st.markdown(
             <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="250" style="border-radius: 4%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
         </div>
         <div style="text-align: center; padding-top: 20px;">
-            <h4 style="font-size: 1.5rem; color: #9156db;">Identify Your Gemstone</h4>
+            <h4 style="font-size: 1.5rem; color: #4a2c70;">Identify Your Gemstone</h4>
         </div>
         <div style="text-align: center;">
-            <h4 style="font-size: 1.5rem; color: #9156db;">📸 Upload the Image of Your Gemstone</h4>
+            <h4 style="font-size: 1.5rem; color: #4a2c70;">📸 Upload the Image of Your Gemstone</h4>
         </div>
         """,
     unsafe_allow_html=True,
