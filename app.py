@@ -7,7 +7,7 @@ import base64
 from io import BytesIO
 from PIL import Image, ImageDraw
 
-# import openai
+import openai
 
 # Load environment variables, including the Roboflow API Key
 # load_dotenv()
@@ -22,7 +22,7 @@ from PIL import Image, ImageDraw
 
 # Use Streamlit secrets to get the API keys
 ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
-# openai.api_key = st.secrets["OPENAI_API_KEY"]
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Defining the model details
 ROBOFLOW_MODEL = "gemstones-2e1jx"
@@ -277,39 +277,42 @@ if img_file_buffer is not None:
             # Display an error if no gemstones are detected
             st.error(error)
 
-    # # Check if prediction exists before calling GEM_AI
-    # if prediction:
-    #     # GEM_AI
-    #     def ask_gem_AI(prediction):
-    #         # Prompt for the AI model
-    #         prompt = prediction
-    #         response = openai.ChatCompletion.create(
-    #             model="gpt-3.5-turbo",
-    #             # model="gpt-4-turbo",
-    #             # model="gpt-4",
-    #             messages=[
-    #                 {
-    #                     "role": "system",
-    #                     "content": """You are an expert gemologist. I will send you a name of a gem.
-    #                     Give me for it:
-    #                     A short explanation about the gem
-    #                     Rarity
-    #                     Where in the world can these be found
-    #                     Price range
-    #                     A short explanation how to preserve it""",
-    #                 },
-    #                 {"role": "user", "content": prompt},
-    #             ],
-    #         )
-    #         # Return the AI response
-    #         # return response.choices[0].message.content
-    #         # Return the AI response
-    #         return response["choices"][0]["message"]["content"]
-    #
-    #     output = ask_gem_AI(prediction)
+    # Check if prediction exists before calling GEM_AI
+    if prediction:
+        # GEM_AI
+        def ask_gem_AI(prediction):
+            # Prompt for the AI model
+            # prompt = prediction
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                # model="gpt-4-turbo",
+                # model="gpt-4",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": """You are an expert gemologist.
+                        I will send you the name of a gem.
+                        Respond with:
+                        - A short explanation about the gem
+                        - Rarity
+                        - Where in the world these can be found
+                        - Price range 
+                        - How to preserve it 
+                        Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
+                    },
+                    {"role": "user", "content": prediction},
+                ],
+                temperature=0,  # Ensures deterministic responses
+            )
+            # Return the AI response
+            # return response.choices[0].message.content
+            # Return the AI response
+            return response["choices"][0]["message"]["content"]
 
-    # to test css:
-    output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+        output = ask_gem_AI(prediction)
+
+    # # to test css:
+    # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
