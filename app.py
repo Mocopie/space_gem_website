@@ -309,28 +309,29 @@ if img_file_buffer is not None:
             # Return the AI response
             return response["choices"][0]["message"]["content"]
 
-        output = ask_gem_AI(prediction)
+        with st.spinner("✨ Generating Gemstone Details..."):
+            output = ask_gem_AI(prediction)
 
-    # # to test css:
-    # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+        # # to test css:
+        # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
 
-    # Use Streamlit columns to display content side by side
-    col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
+        # Use Streamlit columns to display content side by side
+        col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
 
-    with col1:
-        # Display the processed image
-        st.markdown(
-            f"""
-            <div style="text-align: center;">
-                <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        with col1:
+            # Display the processed image
+            st.markdown(
+                f"""
+                <div style="text-align: center;">
+                    <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-    with col2:
-        # Display the AI output
-        st.markdown(output)
+        with col2:
+            # Display the AI output
+            st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
