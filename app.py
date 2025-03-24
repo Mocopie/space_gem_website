@@ -260,10 +260,6 @@ if img_file_buffer is not None:
         if result:
             first_prediction = result["predictions"][0]
             prediction = first_prediction["class"]
-
-            # Set query parameter to 'results' for jumping
-            st.query_params(scroll="results")
-
             st.markdown(
                 f"""
                 <div id="results" style="text-align: center;">
@@ -312,8 +308,8 @@ if img_file_buffer is not None:
             with st.spinner("✨ Generating Gemstone Details..."):
                 output = ask_gem_AI(prediction)
 
-        # # to test css:
-        # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+                # # to test css:
+                # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
@@ -333,14 +329,11 @@ if img_file_buffer is not None:
         # Display the AI output
         st.markdown(output)
 
-# Add JavaScript to jump to 'results' section
+# Add JavaScript to automatically scroll to the results section
 st.markdown(
     """
     <script>
-        const queryParams = new URLSearchParams(window.location.search);
-        if (queryParams.get("scroll") === "results") {
-            document.getElementById("results").scrollIntoView({ behavior: "smooth" });
-        }
+        document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
     </script>
     """,
     unsafe_allow_html=True,
