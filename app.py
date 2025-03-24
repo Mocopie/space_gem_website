@@ -262,7 +262,7 @@ if img_file_buffer is not None:
             prediction = first_prediction["class"]
 
             # Set query parameter to 'results' for jumping
-            st.experimental_set_query_params(scroll="results")
+            st.set_query_params(scroll="results")
 
             st.markdown(
                 f"""
