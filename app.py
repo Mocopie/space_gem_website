@@ -257,18 +257,34 @@ if img_file_buffer is not None:
         with st.spinner("✨ Analyzing the gemstone..."):
             result, error = detect_gemstones(img_bytes)
 
+        # if result:
+        #     for pred in result["predictions"]:
+        #         prediction = pred["class"]
+        #         st.markdown(
+        #             f"""
+        #             <div style="text-align: center;">
+        #                 <h4>💎 Detected Gemstone:</h4>
+        #                 <div>👉 {pred['class'].capitalize()} (Confidence: {pred['confidence']:.2f})</div>
+        #             </div>
+        #             """,
+        #             unsafe_allow_html=True,
+        #         )
         if result:
-            for pred in result["predictions"]:
-                prediction = pred["class"]
-                st.markdown(
-                    f"""
-                    <div style="text-align: center;">
-                        <h4>💎 Detected Gemstone:</h4>
-                        <div>👉 {pred['class'].capitalize()} (Confidence: {pred['confidence']:.2f})</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+            # Only process the first prediction
+            first_prediction = result["predictions"][0]
+            prediction = first_prediction["class"]
+            st.markdown(
+                f"""
+                <div style="text-align: center;">
+                    <h4>💎 Detected Gemstone:</h4>
+                    <div>👉 {first_prediction['class'].capitalize()} (Confidence: {first_prediction['confidence']:.2f})</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    # Show the processed image with bounding boxes
+    processed_image = draw_boxes(img_bytes, result["predictions"])
 
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
