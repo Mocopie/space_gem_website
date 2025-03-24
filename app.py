@@ -257,25 +257,16 @@ if img_file_buffer is not None:
         with st.spinner("✨ Analyzing the gemstone..."):
             result, error = detect_gemstones(img_bytes)
 
-        # if result:
-        #     for pred in result["predictions"]:
-        #         prediction = pred["class"]
-        #         st.markdown(
-        #             f"""
-        #             <div style="text-align: center;">
-        #                 <h4>💎 Detected Gemstone:</h4>
-        #                 <div>👉 {pred['class'].capitalize()} (Confidence: {pred['confidence']:.2f})</div>
-        #             </div>
-        #             """,
-        #             unsafe_allow_html=True,
-        #         )
         if result:
-            # Only process the first prediction
             first_prediction = result["predictions"][0]
             prediction = first_prediction["class"]
+
+            # Set query parameter to 'results' for jumping
+            st.experimental_set_query_params(scroll="results")
+
             st.markdown(
                 f"""
-                <div style="text-align: center;">
+                <div id="results" style="text-align: center;">
                     <h4>💎 Detected Gemstone:</h4>
                     <div>👉 {first_prediction['class'].capitalize()} (Confidence: {first_prediction['confidence']:.2f})</div>
                 </div>
@@ -298,8 +289,6 @@ if img_file_buffer is not None:
                 # prompt = prediction
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
-                    # model="gpt-4-turbo",
-                    # model="gpt-4",
                     messages=[
                         {
                             "role": "system",
@@ -317,8 +306,6 @@ if img_file_buffer is not None:
                     ],
                     temperature=0,  # Ensures deterministic responses
                 )
-                # Return the AI response
-                # return response.choices[0].message.content
                 # Return the AI response
                 return response["choices"][0]["message"]["content"]
 
@@ -345,6 +332,19 @@ if img_file_buffer is not None:
     with col2:
         # Display the AI output
         st.markdown(output)
+
+# Add JavaScript to jump to 'results' section
+st.markdown(
+    """
+    <script>
+        const queryParams = new URLSearchParams(window.location.search);
+        if (queryParams.get("scroll") === "results") {
+            document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+        }
+    </script>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Footer (hidden)
 st.markdown(
