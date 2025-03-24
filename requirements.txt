@@ -9,7 +9,6 @@ pillow
 
 # web
 streamlit
-streamlit-javasccript
 requests
 python-dotenv
 

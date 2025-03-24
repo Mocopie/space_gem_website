@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_javascript import st_js_eval
 import requests
 
 # from dotenv import load_dotenv
@@ -273,11 +272,6 @@ if img_file_buffer is not None:
 
             # Show the processed image with bounding boxes
             processed_image = draw_boxes(img_bytes, result["predictions"])
-
-            # Automatically scroll to the results using JavaScript
-            st_js_eval(
-                "document.getElementById('results').scrollIntoView({ behavior: 'smooth' });"
-            )
 
         else:
             # Display an error if no gemstones are detected
