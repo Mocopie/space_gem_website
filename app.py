@@ -306,10 +306,10 @@ if img_file_buffer is not None:
                 return response["choices"][0]["message"]["content"]
 
             with st.spinner("✨ Generating Gemstone Details..."):
-                output = ask_gem_AI(prediction)
+                # output = ask_gem_AI(prediction)
 
-                # # to test css:
-                # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+                # to test css:
+                output = "# Heading 1\n**Bold Text**\n*Italic Text*"
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
