@@ -277,57 +277,57 @@ if img_file_buffer is not None:
             # Display an error if no gemstones are detected
             st.error(error)
 
-    # Check if prediction exists before calling GEM_AI
-    if prediction:
-        # GEM_AI
-        def ask_gem_AI(prediction):
-            # Prompt for the AI model
-            # prompt = prediction
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                # model="gpt-4-turbo",
-                # model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": """You are an expert gemologist.
-                        I will send you the name of a gem.
-                        Respond in a markdown format with:
-                        A short presentation about the gem
-                        Rarity
-                        Where in the world can these be found
-                        Price range in euros
-                        A short explanation how to preserve it
-                        Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
-                    },
-                    {"role": "user", "content": prediction},
-                ],
-                temperature=0,  # Ensures deterministic responses
-            )
-            # Return the AI response
-            # return response.choices[0].message.content
-            # Return the AI response
-            return response["choices"][0]["message"]["content"]
+        # Check if prediction exists before calling GEM_AI
+        if prediction:
+            # GEM_AI
+            def ask_gem_AI(prediction):
+                # Prompt for the AI model
+                # prompt = prediction
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    # model="gpt-4-turbo",
+                    # model="gpt-4",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": """You are an expert gemologist.
+                            I will send you the name of a gem.
+                            Respond in a markdown format with:
+                            A short presentation about the gem
+                            Rarity
+                            Where in the world can these be found
+                            Price range in euros
+                            A short explanation how to preserve it
+                            Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
+                        },
+                        {"role": "user", "content": prediction},
+                    ],
+                    temperature=0,  # Ensures deterministic responses
+                )
+                # Return the AI response
+                # return response.choices[0].message.content
+                # Return the AI response
+                return response["choices"][0]["message"]["content"]
 
-        with st.spinner("✨ Generating Gemstone Details..."):
-            # Custom HTML and CSS to center spinner text
-            st.markdown(
-                """
-                <style>
-                .stSpinner {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
-                    font-size: 1.5rem;
-                    color: white;
-                    text-align: center;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
-            output = ask_gem_AI(prediction)
+            with st.spinner("✨ Generating Gemstone Details..."):
+                # Custom HTML and CSS to center spinner text
+                st.markdown(
+                    """
+                    <style>
+                    .stSpinner {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100%;
+                        font-size: 1.5rem;
+                        color: white;
+                        text-align: center;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True,
+                )
+                output = ask_gem_AI(prediction)
 
         # # to test css:
         # output = "# Heading 1\n**Bold Text**\n*Italic Text*"
