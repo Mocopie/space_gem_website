@@ -310,6 +310,23 @@ if img_file_buffer is not None:
             return response["choices"][0]["message"]["content"]
 
         with st.spinner("✨ Generating Gemstone Details..."):
+            # Custom HTML and CSS to center spinner text
+            st.markdown(
+                """
+                <style>
+                .stSpinner {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                    font-size: 1.5rem;
+                    color: white;
+                    text-align: center;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
             output = ask_gem_AI(prediction)
 
         # # to test css:
