@@ -296,7 +296,7 @@ if img_file_buffer is not None:
                         A short presentation about the gem
                         Rarity
                         Where in the world can these be found
-                        Price range
+                        Price range in euros
                         A short explanation how to preserve it
                         Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
                     },
