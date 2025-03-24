@@ -329,9 +329,8 @@ if img_file_buffer is not None:
         )
 
     with col2:
-        with st.spinner("✨ Analyzing the gemstone..."):
-            # Display the AI output
-            st.markdown(output)
+        # Display the AI output
+        st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
