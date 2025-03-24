@@ -293,11 +293,11 @@ if img_file_buffer is not None:
                         "content": """You are an expert gemologist.
                         I will send you the name of a gem.
                         Respond with:
-                        - A short explanation about the gem
-                        - Rarity
-                        - Where in the world these can be found
-                        - Price range 
-                        - How to preserve it 
+                        A short presentation about the gem
+                        Rarity
+                        Where in the world can these be found
+                        Price range
+                        A short explanation how to preserve it
                         Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
                     },
                     {"role": "user", "content": prediction},
