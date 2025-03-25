@@ -342,12 +342,20 @@ To preserve the beauty of amethyst, it is important to protect it from scratches
         # Display the processed image
         st.markdown(
             f"""
-            <div style="text-align: center; padding-top: 6vh; margin-left: 15rem;">
+            <div style="text-align: center;">
                 <img src="data:image/png;base64,{base64.b64encode(img_bytes).decode()}" class="processed-image" alt="Processed Gemstone Image">
             </div>
             """,
             unsafe_allow_html=True,
         )
+        # st.markdown(
+        #     f"""
+        #     <div style="text-align: center; padding-top: 6vh; margin-left: 15rem;">
+        #         <img src="data:image/png;base64,{base64.b64encode(img_bytes).decode()}" class="processed-image" alt="Processed Gemstone Image">
+        #     </div>
+        #     """,
+        #     unsafe_allow_html=True,
+        # )
 
         # # Display the processed image
         # st.markdown(
