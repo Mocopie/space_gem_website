@@ -18,6 +18,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
+@st.cache_data
 def detect_gemstones(image_bytes):
     """
     Sends the image to Roboflow YOLOv8 API for gemstone detection and classification.
@@ -89,6 +90,7 @@ BACKGROUND_IMAGE_PATH = "images/background.png"
 LOGO_IMAGE_PATH = "images/logo.png"
 
 
+@st.cache_resource
 def set_background_color(apply_background=True):
     """
     Configures the app's background image and responsive CSS styling.
@@ -290,6 +292,7 @@ if img_file_buffer is not None:
         # Check if prediction exists before calling GEM_AI
         if prediction:
             # GEM_AI
+            @st.cache_data
             def ask_gem_AI(prediction):
                 # Prompt for the AI model
                 # prompt = prediction
