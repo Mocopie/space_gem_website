@@ -407,15 +407,7 @@ if img_file_buffer is not None:
 
     with col2:
         # Display the AI output
-        # st.markdown(output)
-        st.markdown(
-            f"""
-            <div class="responsive-container">
-                <div>{output}</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
