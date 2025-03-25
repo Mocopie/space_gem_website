@@ -12,26 +12,10 @@ import openai
 # Load environment variables, including the Roboflow API Key
 # load_dotenv()
 
-# Define your Roboflow API Key and model details
-# ROBOFLOW_API_KEY = os.getenv(
-# "ROBOFLOW_API_KEY", "your-roboflow-api-key"
-# )  # Replace with actual key
-
 # openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
-# Use Streamlit secrets to get the API keys
-ROBOFLOW_API_KEY = st.secrets["ROBOFLOW_API_KEY"]
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Defining the model details
-ROBOFLOW_MODEL = "gemstones-2e1jx"
-ROBOFLOW_VERSION = "3"
-
-# Roboflow API Endpoint
-ROBOFLOW_URL = (
-    f"https://detect.roboflow.com/{ROBOFLOW_MODEL}/{ROBOFLOW_VERSION}"
-)
+SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
 def detect_gemstones(image_bytes):
@@ -40,8 +24,9 @@ def detect_gemstones(image_bytes):
     Returns predictions and an error message (if any).
     """
     response = requests.post(
-        ROBOFLOW_URL,
-        params={"api_key": ROBOFLOW_API_KEY},
+        # ROBOFLOW_URL,
+        SPACE_GEM_URL,
+        # params={"api_key": ROBOFLOW_API_KEY},
         files={"file": image_bytes},
     )
 
@@ -49,42 +34,47 @@ def detect_gemstones(image_bytes):
         return None, "❌ Error: Unable to process image."
 
     result = response.json()
-    if "predictions" not in result or len(result["predictions"]) == 0:
+    # if "predictions" not in result or len(result["predictions"]) == 0:
+    #     return None, "⚠️ No gemstone detected in the image."
+    if (
+        "predicted_gemstone" not in result
+        or len(result["predicted_gemstone"]) == 0
+    ):
         return None, "⚠️ No gemstone detected in the image."
 
-    return result, None
+    return result["predicted_gemstone"], None
 
 
-def draw_boxes(image_bytes, predictions):
-    """
-    Draws bounding boxes around detected gemstones with their classifications.
-    Returns the modified image as bytes.
-    """
-    image = Image.open(BytesIO(image_bytes))
-    draw = ImageDraw.Draw(image)
-
-    for pred in predictions:
-        # Extract bounding box coordinates and gemstone classification
-        x, y, width, height = (
-            pred["x"],
-            pred["y"],
-            pred["width"],
-            pred["height"],
-        )
-        gemstone_type = pred["class"]
-
-        # Calculate the rectangle coordinates for the bounding box
-        x0, y0 = x - width / 2, y - height / 2
-        x1, y1 = x + width / 2, y + height / 2
-
-        # Draw the bounding box and label
-        draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
-        draw.text((x0, y0 - 10), gemstone_type, fill="red")
-
-    # Save the modified image to a buffer and return its bytes
-    output_buffer = BytesIO()
-    image.save(output_buffer, format="PNG")
-    return output_buffer.getvalue()
+# def draw_boxes(image_bytes, predictions):
+#     """
+#     Draws bounding boxes around detected gemstones with their classifications.
+#     Returns the modified image as bytes.
+#     """
+#     image = Image.open(BytesIO(image_bytes))
+#     draw = ImageDraw.Draw(image)
+#
+#     for pred in predictions:
+#         # Extract bounding box coordinates and gemstone classification
+#         x, y, width, height = (
+#             pred["x"],
+#             pred["y"],
+#             pred["width"],
+#             pred["height"],
+#         )
+#         gemstone_type = pred["class"]
+#
+#         # Calculate the rectangle coordinates for the bounding box
+#         x0, y0 = x - width / 2, y - height / 2
+#         x1, y1 = x + width / 2, y + height / 2
+#
+#         # Draw the bounding box and label
+#         draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
+#         draw.text((x0, y0 - 10), gemstone_type, fill="red")
+#
+#     # Save the modified image to a buffer and return its bytes
+#     output_buffer = BytesIO()
+#     image.save(output_buffer, format="PNG")
+#     return output_buffer.getvalue()
 
 
 # Set Streamlit page configuration
@@ -153,6 +143,7 @@ def set_background_color(apply_background=True):
                 height: auto;
                 border-radius: 12px;
                 box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+                padding-top: 5vh;
             }}
             .prediction-text {{
                 text-align: center;
@@ -225,32 +216,28 @@ if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
         logo_base64 = base64.b64encode(logo_file.read()).decode()
 
-        st.markdown(
-            f"""
-                <div style="text-align: center; padding: 20px;">
-                    <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="250" style="border-radius: 4%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
-                </div>
-                <div style="text-align: center; padding-top: 20px;">
-                    <h4 style="font-size: 1.5rem; ">Identify Your Gemstone</h4>
-                </div>
-                <div style="text-align: center;">
-                    <h4 style="font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-                </div>
-                """,
-            unsafe_allow_html=True,
-        )
+st.markdown(
+    f"""
+        <div style="text-align: center; padding: 20px;">
+            <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="250" style="border-radius: 4%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+        </div>
+        <div style="text-align: center; padding-top: 20px;">
+            <h4 style="font-size: 1.5rem; ">Identify Your Gemstone</h4>
+        </div>
+        <div style="text-align: center;">
+            <h4 style="font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+        </div>
+        """,
+    unsafe_allow_html=True,
+)
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    img_file_buffer = st.file_uploader(
-        "Upload gemstime image",
-        type=["png", "jpg", "jpeg"],
-        label_visibility="hidden",
-    )
+    img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
 # Define the variable prediction with a default value
-prediction = None
+# prediction = None
 
 # Handle file upload and processing
 if img_file_buffer is not None:
@@ -259,23 +246,42 @@ if img_file_buffer is not None:
     with col2:
         img_bytes = img_file_buffer.getvalue()
         with st.spinner("✨ Analyzing the gemstone..."):
-            result, error = detect_gemstones(img_bytes)
+            # result, error = detect_gemstones(img_bytes)
+            prediction, error = detect_gemstones(img_bytes)
 
-        if result:
-            first_prediction = result["predictions"][0]
-            prediction = first_prediction["class"]
+        # if result:
+        if prediction:
+            # first_prediction = result["predictions"][0]
+            # prediction = first_prediction["class"]
+            # prediction = prediction["predicted_gemstone"]
+            # st.markdown(
+            #     f"""
+            #     <div id="results" style="text-align: center;">
+            #         <h4>💎 Detected Gemstone:</h4>
+            #         <div>👉 {first_prediction['class'].capitalize()} (Confidence: {first_prediction['confidence']:.2f})</div>
+            #     </div>
+            #     """,
+            #     unsafe_allow_html=True,
+            # )
             st.markdown(
                 f"""
                 <div id="results" style="text-align: center;">
                     <h4>💎 Detected Gemstone:</h4>
-                    <div>👉 {first_prediction['class'].capitalize()} (Confidence: {first_prediction['confidence']:.2f})</div>
+                    <div>👉 {prediction}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
             # Show the processed image with bounding boxes
-            processed_image = draw_boxes(img_bytes, result["predictions"])
+            # processed_image = draw_boxes(img_bytes, result["predictions"])
+            # processed_image = draw_boxes(
+            # img_bytes, result["predicted_gemstone"]
+            # img_bytes,
+            # prediction["predicted_gemstone"],
+            #     img_bytes,
+            #     prediction,
+            # )
 
         else:
             # Display an error if no gemstones are detected
@@ -312,8 +318,22 @@ if img_file_buffer is not None:
             with st.spinner("✨ Generating Gemstone Details..."):
                 # output = ask_gem_AI(prediction)
 
-                # to test css:
-                output = "# Heading 1\n**Bold Text**\n*Italic Text*"
+                # # to test css:
+                output = """Amethyst
+
+Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
+Rarity
+
+Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
+Where to Find
+
+Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
+Price Range
+
+The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
+Preservation
+
+To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
@@ -322,12 +342,22 @@ if img_file_buffer is not None:
         # Display the processed image
         st.markdown(
             f"""
-            <div style="text-align: center;">
-                <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
+            <div style="text-align: center; padding-top: 6vh; margin-left: 15rem;">
+                <img src="data:image/png;base64,{base64.b64encode(img_bytes).decode()}" class="processed-image" alt="Processed Gemstone Image">
             </div>
             """,
             unsafe_allow_html=True,
         )
+
+        # # Display the processed image
+        # st.markdown(
+        #     f"""
+        #     <div style="text-align: center;">
+        #         <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
+        #     </div>
+        #     """,
+        #     unsafe_allow_html=True,
+        # )
 
     with col2:
         # Display the AI output
