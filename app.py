@@ -410,7 +410,7 @@ if img_file_buffer is not None:
         # st.markdown(output)
         st.markdown(
             f"""
-            <div style="text-align: center; padding-top: 6vh;" class="responsive-container">
+            <div class="responsive-container">
                 <div>{output}</div>
             </div>
             """,
