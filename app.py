@@ -316,25 +316,25 @@ if img_file_buffer is not None:
                 return response["choices"][0]["message"]["content"]
 
             with st.spinner("✨ Generating Gemstone Details..."):
-                output = ask_gem_AI(prediction)
+                # output = ask_gem_AI(prediction)
 
                 # # to test css:
-    #                 output = """Amethyst
-    #
-    # Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
-    # Rarity
-    #
-    # Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
-    # Where to Find
-    #
-    # Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
-    # Price Range
-    #
-    # The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
-    # Preservation
-    #
-    # To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
-    #
+                output = """Amethyst
+
+    Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
+    Rarity
+
+    Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
+    Where to Find
+
+    Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
+    Price Range
+
+    The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
+    Preservation
+
+    To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
+
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
 
