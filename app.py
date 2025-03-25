@@ -243,7 +243,9 @@ if os.path.exists(LOGO_IMAGE_PATH):
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
+    img_file_buffer = st.file_uploader(
+        "", type=["png", "jpg", "jpeg"], label_visibility="hidden"
+    )
 
 # Define the variable prediction with a default value
 prediction = None
