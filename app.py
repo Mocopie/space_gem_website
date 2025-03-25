@@ -304,7 +304,7 @@ if img_file_buffer is not None:
                             A short presentation about the gem
                             Rarity
                             Where in the world can these be found
-                            Price range in euros
+                            Price range in euros with the euro symbol and numbers written in numbers instead of words
                             A short explanation how to preserve it
                             Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
                         },
