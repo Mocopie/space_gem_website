@@ -411,7 +411,7 @@ if img_file_buffer is not None:
         st.markdown(
             f"""
             <div style="text-align: center; padding-top: 6vh;" class="responsive-container">
-                {output}
+                <div>{output}</div>
             </div>
             """,
             unsafe_allow_html=True,
