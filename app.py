@@ -18,7 +18,7 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
-@st.cache_data
+# @st.cache_data
 def detect_gemstones(image_bytes):
     """
     Sends the image to Roboflow YOLOv8 API for gemstone detection and classification.
