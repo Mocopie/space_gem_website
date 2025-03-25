@@ -225,20 +225,20 @@ if os.path.exists(LOGO_IMAGE_PATH):
     with open(LOGO_IMAGE_PATH, "rb") as logo_file:
         logo_base64 = base64.b64encode(logo_file.read()).decode()
 
-st.markdown(
-    f"""
-        <div style="text-align: center; padding: 20px;">
-            <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="250" style="border-radius: 4%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
-        </div>
-        <div style="text-align: center; padding-top: 20px;">
-            <h4 style="font-size: 1.5rem; ">Identify Your Gemstone</h4>
-        </div>
-        <div style="text-align: center;">
-            <h4 style="font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
-        </div>
-        """,
-    unsafe_allow_html=True,
-)
+        st.markdown(
+            f"""
+                <div style="text-align: center; padding: 20px;">
+                    <img src="data:image/png;base64,{logo_base64}" alt="Logo Space Gem" width="250" style="border-radius: 4%; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+                </div>
+                <div style="text-align: center; padding-top: 20px;">
+                    <h4 style="font-size: 1.5rem; ">Identify Your Gemstone</h4>
+                </div>
+                <div style="text-align: center;">
+                    <h4 style="font-size: 1.5rem;">📸 Upload the Image of Your Gemstone</h4>
+                </div>
+                """,
+            unsafe_allow_html=True,
+        )
 
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
