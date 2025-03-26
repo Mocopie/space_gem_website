@@ -316,7 +316,7 @@ if img_file_buffer is not None:
                             An explanation of a maximum 50 words about the stone
                             How rare is the gem?
                             Where in the world can these be found
-                            Price range in euros in numbers
+                            Price range in euros in numbers with the euros sign €
                             A short explanation of how to preserve it""",
                         },
                         {"role": "user", "content": prediction},
