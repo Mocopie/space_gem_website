@@ -311,7 +311,7 @@ if img_file_buffer is not None:
                             "role": "system",
                             "content": """
                             You are an expert gemologist.
-                            I will send you a list of gem names.
+                            I will send you a list of gem names and capitalize the name of the gemstone.
                             Respond in a user-friendly manner.
                             Open with the sentense: Congratulations on finding
                             if it's only one gemstone then 
