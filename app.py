@@ -312,7 +312,7 @@ if img_file_buffer is not None:
                             "content": """
                             You are an expert gemologist.
                             I will send you a list of gem names.
-                            Respond in a user-friendly manner, open with the sentense Congratulations on finding the gemstone name_of_the_gemstone if it's only one gemstone if it's a list of gemstones then open with the sentence Congratulations on finding the gemstones: list_of_gemstones and then give this information for each gem on the list and keep the format below AND in a markdown format:
+                            Respond in a user-friendly manner, open with the sentense Congratulations on finding a name_of_the_gemstone if it's only one gemstone if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones and then give this information for each gem on the list and keep the format below AND in a markdown format:
                             An explanation of a maximum 50 words about the stone
                             How rare is the gem?
                             Where in the world can these be found
