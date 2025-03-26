@@ -313,11 +313,11 @@ if img_file_buffer is not None:
                             You are an expert gemologist.
                             I will send you a list of gem names.
                             Respond in a user-friendly manner, open with congratulating the user for finding these gems and then give this information for each gem on the list and keep the format below AND in a markdown format:
-                            1. An explanation of a maximum 50 words about the stone
-                            2. How rare is the gem?
-                            3. Where in the world can these be found
-                            4. Price range in euros in numbers
-                            5. A short explanation of how to preserve it""",
+                            An explanation of a maximum 50 words about the stone
+                            How rare is the gem?
+                            Where in the world can these be found
+                            Price range in euros in numbers
+                            A short explanation of how to preserve it""",
                         },
                         {"role": "user", "content": prediction},
                     ],
