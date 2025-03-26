@@ -311,7 +311,7 @@ if img_file_buffer is not None:
                             "role": "system",
                             "content": """
                             You are an expert gemologist.
-                            I will send you a list of gem names and capitalize the name of the gemstone.
+                            I will send you a list of gem names and capitalize the first letter of the gemstone.
                             Respond in a user-friendly manner.
                             Open with the sentense: Congratulations on finding
                             if it's only one gemstone then 
@@ -319,7 +319,8 @@ if img_file_buffer is not None:
                             if the name of the gemstone starts with a vowel use the article an
 
                             if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones 
-                            and then give the following information for the one gem or if a list for each gem on the list and keep the format below AND in a markdown format:
+
+                            AND give the following information for each gem on the list and keep the format below AND in a markdown format:
                             An explanation of a maximum 50 words about the stone
                             How rare is the gem?
                             Where in the world can these be found
