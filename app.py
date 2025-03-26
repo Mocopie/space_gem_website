@@ -265,23 +265,23 @@ if img_file_buffer is not None:
             #     """,
             #     unsafe_allow_html=True,
             # )
-            # st.markdown(
-            #     f"""
-            #     <div id="results" style="text-align: center;">
-            #         <h4>💎 Detected Gemstone:</h4>
-            #     </div>
-            #     """,
-            #     unsafe_allow_html=True,
-            # )
             st.markdown(
                 f"""
                 <div id="results" style="text-align: center;">
                     <h4>💎 Detected Gemstone:</h4>
-                    <div>👉 {prediction}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
+            # st.markdown(
+            #     f"""
+            #     <div id="results" style="text-align: center;">
+            #         <h4>💎 Detected Gemstone:</h4>
+            #         <div>👉 {prediction}</div>
+            #     </div>
+            #     """,
+            #     unsafe_allow_html=True,
+            # )
 
             # Show the processed image with bounding boxes
             # processed_image = draw_boxes(img_bytes, result["predictions"])
@@ -301,30 +301,30 @@ if img_file_buffer is not None:
         if prediction:
             # GEM_AI
             # @st.cache_data
-            def ask_gem_AI(prediction):
-                # Prompt for the AI model
-                # prompt = prediction
-                # response = openai.ChatCompletion.create(
-                #     model="gpt-3.5-turbo",
-                #     messages=[
-                #         {
-                #             "role": "system",
-                #             "content": """
-                #             You are an expert gemologist.
-                #             I will send you a list of gem names.
-                #             Respond in a user-friendly manner, open with congratulating the user for finding these gems and then give this information for each gem on the list and keep the format below AND in a markdown format:
-                #             1. An explanation of a maximum 50 words about the stone
-                #             2. How rare is the gem?
-                #             3. Where in the world can these be found
-                #             4. Price range in euros in numbers
-                #             5. A short explanation of how to preserve it""",
-                #         },
-                #         {"role": "user", "content": prediction},
-                #     ],
-                #     temperature=0,  # Ensures deterministic responses
-                # )
-                # # Return the AI response
-                # return response["choices"][0]["message"]["content"]
+            # def ask_gem_AI(prediction):
+            # Prompt for the AI model
+            # prompt = prediction
+            # response = openai.ChatCompletion.create(
+            #     model="gpt-3.5-turbo",
+            #     messages=[
+            #         {
+            #             "role": "system",
+            #             "content": """
+            #             You are an expert gemologist.
+            #             I will send you a list of gem names.
+            #             Respond in a user-friendly manner, open with congratulating the user for finding these gems and then give this information for each gem on the list and keep the format below AND in a markdown format:
+            #             1. An explanation of a maximum 50 words about the stone
+            #             2. How rare is the gem?
+            #             3. Where in the world can these be found
+            #             4. Price range in euros in numbers
+            #             5. A short explanation of how to preserve it""",
+            #         },
+            #         {"role": "user", "content": prediction},
+            #     ],
+            #     temperature=0,  # Ensures deterministic responses
+            # )
+            # # Return the AI response
+            # return response["choices"][0]["message"]["content"]
 
             def ask_gem_AI(prediction):
                 # Prompt for the AI model
