@@ -54,8 +54,10 @@ LOGO_IMAGE_PATH = "images/logo.png"
 def set_background_color(apply_background=True):
     """
     Configures the app's background image and responsive CSS styling.
+        Parameters:
+        - apply_background: Boolean flag to enable or disable background styling.
     """
-    if apply_background:
+    if apply_background and os.path.exists(BACKGROUND_IMAGE_PATH):
         with open(BACKGROUND_IMAGE_PATH, "rb") as image_file:
             image_base64 = base64.b64encode(image_file.read()).decode()
 
