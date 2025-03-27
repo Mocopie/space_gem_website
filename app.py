@@ -226,14 +226,6 @@ def ask_gem_AI(prediction):
                 Where in the world can these be found
                 Price range in euros in numbers with the euros sign €
                 A short explanation of how to preserve it
-
-                For each gem:
-                **Details:** about the gemstones (max 50 words)
-                **Rarity level:**
-                **Locations:** where found
-                **Price range:** (€)
-                **Preservation tips:**
-                Use markdown formatting.
                 """,
             },
             {"role": "user", "content": prediction},
