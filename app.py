@@ -29,11 +29,9 @@ def detect_gemstones(image_bytes):
 
     result = response.json()
 
-    # Handle single gemstone response
-    if "predicted_gemstone" in result and isinstance(
-        result["predicted_gemstone"], str
-    ):
-        return [result["predicted_gemstone"]], None
+    # Handle single gemstone response (string format)
+    if isinstance(result, str):
+        return [result], None  # Return the gemstone name as a list
 
     # Handle multiple gemstone response
     if isinstance(result, dict):
