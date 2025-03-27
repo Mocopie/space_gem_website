@@ -1,16 +1,10 @@
 import streamlit as st
 import requests
-
 import os
 import base64
-
-# from io import BytesIO
-# from PIL import Image, ImageDraw
-
 import openai
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
@@ -40,14 +34,6 @@ def detect_gemstones(image_bytes):
             return gemstones, None
 
     return None, "⚠️ No gemstone detected in the image."
-
-    # if (
-    #     "predicted_gemstone" not in result
-    #     or len(result["predicted_gemstone"]) == 0
-    # ):
-    #     return None, "⚠️ No gemstone detected in the image."
-    #
-    # return result["predicted_gemstone"], None
 
 
 # def draw_boxes(image_bytes, predictions):
@@ -237,6 +223,39 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+
+def ask_gem_AI(prediction):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": """
+                You are an expert gemologist.
+                I will send you a list of gem names and capitalize the first letter of the gemstone.
+                Respond in a user-friendly manner.
+                Open with the sentense: Congratulations on finding
+                if it's only one gemstone then
+                if the name of the gemstone starts with a consonant use the article a
+                if the name of the gemstone starts with a vowel use the article an
+
+                if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones
+
+                AND give the following information for each gem on the list and keep the format below AND in a markdown format:
+                An explanation of a maximum 50 words about the stone
+                How rare is the gem?
+                Where in the world can these be found
+                Price range in euros in numbers with the euros sign €
+                A short explanation of how to preserve it""",
+            },
+            {"role": "user", "content": prediction},
+        ],
+        temperature=0,  # Ensures deterministic responses
+    )
+    # Return the AI response
+    return response["choices"][0]["message"]["content"]
+
+
 # File uploader section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
@@ -266,9 +285,9 @@ if img_file_buffer is not None:
                 gemstone_name = prediction[0]
 
                 st.markdown(f"**Gemstone:** {gemstone_name}")
-                # with st.spinner("✨ Generating Gemstone Details..."):
-                #     output = ask_gem_AI(gemstone_name)
-                #     st.markdown(output)
+                with st.spinner("✨ Generating Gemstone Details..."):
+                    output = ask_gem_AI(gemstone_name)
+                    st.markdown(output)
 
             elif isinstance(prediction, dict):  # Multiple gemstones
                 st.markdown("### List of Gemstones Detected:")
@@ -277,48 +296,15 @@ if img_file_buffer is not None:
                 )
                 st.markdown(f"**Gemstones:** {gemstone_list}")
 
-                # with st.spinner("✨ Generating Gemstone Details..."):
-                #     gemstone_names = ", ".join(prediction.keys())
-                #     output = ask_gem_AI(gemstone_names)
-                #     st.markdown(output)
+                with st.spinner("✨ Generating Gemstone Details..."):
+                    gemstone_names = ", ".join(prediction.keys())
+                    output = ask_gem_AI(gemstone_names)
+                    st.markdown(output)
 
         else:
             # Display an error if no gemstones are detected
             st.error(error)
 
-        # # Check if prediction exists before calling GEM_AI
-        # if prediction:
-        #
-        #     def ask_gem_AI(prediction):
-        #         response = openai.ChatCompletion.create(
-        #             model="gpt-3.5-turbo",
-        #             messages=[
-        #                 {
-        #                     "role": "system",
-        #                     "content": """
-        #                     You are an expert gemologist.
-        #                     I will send you a list of gem names and capitalize the first letter of the gemstone.
-        #                     Respond in a user-friendly manner.
-        #                     Open with the sentense: Congratulations on finding
-        #                     if it's only one gemstone then
-        #                     if the name of the gemstone starts with a consonant use the article a
-        #                     if the name of the gemstone starts with a vowel use the article an
-        #
-        #                     if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones
-        #
-        #                     AND give the following information for each gem on the list and keep the format below AND in a markdown format:
-        #                     An explanation of a maximum 50 words about the stone
-        #                     How rare is the gem?
-        #                     Where in the world can these be found
-        #                     Price range in euros in numbers with the euros sign €
-        #                     A short explanation of how to preserve it""",
-        #                 },
-        #                 {"role": "user", "content": prediction},
-        #             ],
-        #             temperature=0,  # Ensures deterministic responses
-        #         )
-        #         # Return the AI response
-        #         return response["choices"][0]["message"]["content"]
         #
         #     with st.spinner("✨ Generating Gemstone Details..."):
         #         output = ask_gem_AI(prediction)
