@@ -220,13 +220,21 @@ def ask_gem_AI(prediction):
 
                 if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
 
+                AND give the following information for each gem on the list and keep the format below AND in a markdown format:
+                An explanation of a maximum 50 words about the stone
+                How rare is the gem?
+                Where in the world can these be found
+                Price range in euros in numbers with the euros sign €
+                A short explanation of how to preserve it
+
                 For each gem:
                 **Details:** about the gemstones (max 50 words)
                 **Rarity level:**
                 **Locations:** where found
                 **Price range:** (€)
                 **Preservation tips:**
-                Use markdown formatting.""",
+                Use markdown formatting.
+                """,
             },
             {"role": "user", "content": prediction},
         ],
