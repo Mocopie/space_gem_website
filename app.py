@@ -202,7 +202,7 @@ def ask_gem_AI(prediction):
                 You are an expert gemologist.
                 I will send you a list of gem names and capitalize the first letter of the gemstone.
                 Respond in a user-friendly manner.
-                Open with the sentense: Congratulations on finding
+                Open with the sentense in bold: Congratulations on finding
                 if it's only one gemstone then
                 if the name of the gemstone starts with a consonant use the article a
                 if the name of the gemstone starts with a vowel use the article an
