@@ -285,7 +285,7 @@ if img_file_buffer is not None:
                 gemstone_name = prediction[0]
 
                 # st.markdown(f"💎**Gemstone:** {gemstone_name}")
-                st.markdown(f"### 💎 Gemstone: {gemstone_name}")
+                st.markdown(f"### 💎 Gemstone Detected: {gemstone_name}")
                 with st.spinner("✨ Generating Gemstone Details..."):
                     output = ask_gem_AI(gemstone_name)
                     # st.markdown(output)
@@ -351,7 +351,7 @@ if img_file_buffer is not None:
                     f"{gem} (x{count})" for gem, count in prediction.items()
                 )
                 # st.markdown(f"**Gemstones:** {gemstone_list}")
-                st.markdown({gemstone_list})
+                st.markdown(f"### {gemstone_list}")
 
                 with st.spinner("✨ Generating Gemstone Details..."):
                     gemstone_names = ", ".join(prediction.keys())
