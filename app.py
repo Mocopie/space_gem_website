@@ -36,38 +36,6 @@ def detect_gemstones(image_bytes):
     return None, "⚠️ No gemstone detected in the image."
 
 
-# def draw_boxes(image_bytes, predictions):
-#     """
-#     Draws bounding boxes around detected gemstones with their classifications.
-#     Returns the modified image as bytes.
-#     """
-#     image = Image.open(BytesIO(image_bytes))
-#     draw = ImageDraw.Draw(image)
-#
-#     for pred in predictions:
-#         # Extract bounding box coordinates and gemstone classification
-#         x, y, width, height = (
-#             pred["x"],
-#             pred["y"],
-#             pred["width"],
-#             pred["height"],
-#         )
-#         gemstone_type = pred["class"]
-#
-#         # Calculate the rectangle coordinates for the bounding box
-#         x0, y0 = x - width / 2, y - height / 2
-#         x1, y1 = x + width / 2, y + height / 2
-#
-#         # Draw the bounding box and label
-#         draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
-#         draw.text((x0, y0 - 10), gemstone_type, fill="red")
-#
-#     # Save the modified image to a buffer and return its bytes
-#     output_buffer = BytesIO()
-#     image.save(output_buffer, format="PNG")
-#     return output_buffer.getvalue()
-
-
 # Set Streamlit page configuration
 st.set_page_config(
     page_title="Space Gem",
