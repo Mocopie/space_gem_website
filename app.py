@@ -220,7 +220,7 @@ def ask_gem_AI(prediction):
 
                 if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
 
-                For each gem weather a single gem or multiple, use this format bellow:
+                For each gem whether a single gem or multiple, use this format bellow make sure to have a breakling for each elements
                 **Details:** about the gemstones (max 50 words)
                 **Rarity level:**
                 **Locations:** where found
