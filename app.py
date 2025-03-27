@@ -5,12 +5,14 @@ import base64
 import openai
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+# Space Gem API URL
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
 def detect_gemstones(image_bytes):
     """
-    Sends the image to our API for gemstone detection and classification.
+    Sends the image to the Space Gem API for gemstone detection and classification.
     Returns predictions and an error message (if any).
     """
     response = requests.post(
@@ -192,35 +194,72 @@ st.markdown(
 )
 
 
+# def ask_gem_AI(prediction):
+#     """
+#     Communicates with OpenAI's GPT model to generate detailed gemstone information.
+#     Parameters:
+#         - prediction: List or dictionary of gemstone names.
+#     Returns:
+#         - AI-generated details in markdown format.
+#     """
+#     response = openai.ChatCompletion.create(
+#         model="gpt-3.5-turbo",
+#         messages=[
+#             {
+#                 "role": "system",
+#                 "content": """
+#                 You are an expert gemologist.
+#                 I will send you a list of gem names and capitalize the first letter of the gemstone.
+#                 Respond in a user-friendly manner.
+#                 Open with the sentense in bold: Congratulations on finding
+#                 if it's only one gemstone then
+#                 if the name of the gemstone starts with a consonant use the article a
+#                 if the name of the gemstone starts with a vowel use the article an
+#
+#                 if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
+#
+#                 AND give the following information for each gem on the list and keep the format below AND in a markdown format:
+#                 An explanation of a maximum 50 words about the stone
+#                 How rare is the gem?
+#                 Where in the world can these be found
+#                 Price range in euros in numbers with the euros sign €
+#                 A short explanation of how to preserve it""",
+#             },
+#             {"role": "user", "content": prediction},
+#         ],
+#         temperature=0,  # Ensures deterministic responses
+#     )
+#     # Return the AI response
+#     return response["choices"][0]["message"]["content"]
+
+
 def ask_gem_AI(prediction):
+    """
+    Communicates with OpenAI's GPT model to generate detailed gemstone information.
+    Parameters:
+        - prediction: List or dictionary of gemstone names.
+    Returns:
+        - AI-generated details in markdown format.
+    """
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {
                 "role": "system",
                 "content": """
-                You are an expert gemologist.
-                I will send you a list of gem names and capitalize the first letter of the gemstone.
-                Respond in a user-friendly manner.
-                Open with the sentense in bold: Congratulations on finding
-                if it's only one gemstone then
-                if the name of the gemstone starts with a consonant use the article a
-                if the name of the gemstone starts with a vowel use the article an
-
-                if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
-
-                AND give the following information for each gem on the list and keep the format below AND in a markdown format:
-                An explanation of a maximum 50 words about the stone
-                How rare is the gem?
-                Where in the world can these be found
-                Price range in euros in numbers with the euros sign €
-                A short explanation of how to preserve it""",
+                You are an expert gemologist. I will send you a list of gem names.
+                Respond in a user-friendly manner with detailed information for each gemstone:
+                - Explanation (max 50 words)
+                - Rarity level
+                - Locations where found
+                - Price range (€)
+                - Preservation tips.
+                Use markdown formatting.""",
             },
             {"role": "user", "content": prediction},
         ],
         temperature=0,  # Ensures deterministic responses
     )
-    # Return the AI response
     return response["choices"][0]["message"]["content"]
 
 
