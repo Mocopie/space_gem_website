@@ -284,7 +284,7 @@ if img_file_buffer is not None:
             if isinstance(prediction, list):  # Single gemstone
                 gemstone_name = prediction[0]
 
-                st.markdown(f"**Gemstone:** {gemstone_name}")
+                st.markdown(f"💎**Gemstone:** {gemstone_name}")
                 with st.spinner("✨ Generating Gemstone Details..."):
                     output = ask_gem_AI(gemstone_name)
                     # st.markdown(output)
@@ -345,7 +345,7 @@ if img_file_buffer is not None:
                         st.markdown(output)
 
             elif isinstance(prediction, dict):  # Multiple gemstones
-                st.markdown("### List of Gemstones Detected:")
+                st.markdown("💎### List of Gemstones Detected:")
                 gemstone_list = ", ".join(
                     f"{gem} (x{count})" for gem, count in prediction.items()
                 )
