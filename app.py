@@ -220,10 +220,10 @@ def ask_gem_AI(prediction):
 
                 For each gem:
                 - Details about the gemstones (max 50 words)
-                - Rarity level
-                - Locations where found
-                - Price range (€)
-                - Preservation tips.
+                - **Rarity level:**
+                - **Locations:** where found
+                - **Price range:** (€)
+                - **Preservation tips:**
                 Use markdown formatting.""",
             },
             {"role": "user", "content": prediction},
