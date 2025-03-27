@@ -211,22 +211,24 @@ def ask_gem_AI(prediction):
                 "role": "system",
                 "content": """
                 You are an expert gemologist.
-                I will send you a list of gem names and capitalize the first letter of the gemstone.
-                Respond in a user-friendly manner.
-                Open with the sentense in bold: Congratulations on finding
-                if it's only one gemstone then
-                if the name of the gemstone starts with a consonant use the article a
-                if the name of the gemstone starts with a vowel use the article an
+                I will send you either the name of 1 gem or a list of gem names. Capitalize the first letter of each gemstone name.
+                
+                Your task:
+                - Open your response with the sentence in bold: **Congratulations on finding**
+                  - If there's only one gemstone:
+                      - If the name of the gemstone starts with a consonant, use the article "a".
+                      - If the name of the gemstone starts with a vowel, use the article "an".
+                  - If there are multiple gemstones, open with **Congratulations on finding: list_of_gemstones** (in bold).
+                
+                For each gemstone, provide the following information in markdown format. Each category must be bold and start on a new line:
+                **Details:** A brief explanation about the gemstone (maximum 50 words).
+                **Rarity:** How rare the gemstone is.
+                **Locations:** Places where the gemstone can be found.
+                **Price range:** In euros (€). Provide realistic values.
+                **Preservation tips:** Advice on how to preserve the gemstone.
 
-                if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
-
-                For each gem whether a single gem or multiple gems, for each of the category below, insert a breakline
-                **Details:** about the gemstones (max 50 words)
-                **Rarity level:**
-                **Locations:** where found
-                **Price range:** (€)
-                **Preservation tips:**
-                Use markdown formatting.
+                Use proper markdown formatting with spaces and breaklines for readability.
+                Your output must follow this exact format for each gemstone, whether it's a single gemstone or a list of multiple gemstones.
                 """,
             },
             {"role": "user", "content": prediction},
