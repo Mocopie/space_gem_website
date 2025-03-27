@@ -271,14 +271,14 @@ if img_file_buffer is not None:
             prediction, error = detect_gemstones(img_bytes)
 
         if prediction:
-            st.markdown(
-                """
-                <div id="results" style="text-align: center;">
-                    <h4>💎 Detected Gemstone:</h4>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            # st.markdown(
+            #     """
+            #     <div id="results" style="text-align: center;">
+            #         <h4>💎 Detected Gemstone:</h4>
+            #     </div>
+            #     """,
+            #     unsafe_allow_html=True,
+            # )
 
             # Check if the prediction is a single gemstone or multiple gemstones
             if isinstance(prediction, list):  # Single gemstone
