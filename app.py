@@ -239,15 +239,6 @@ if img_file_buffer is not None:
             prediction, error = detect_gemstones(img_bytes)
 
         if prediction:
-            # st.markdown(
-            #     """
-            #     <div id="results" style="text-align: center;">
-            #         <h4>💎 Detected Gemstone:</h4>
-            #     </div>
-            #     """,
-            #     unsafe_allow_html=True,
-            # )
-
             # Check if the prediction is a single gemstone or multiple gemstones
             if isinstance(prediction, list):  # Single gemstone
                 gemstone_name = prediction[0]
@@ -384,80 +375,6 @@ if img_file_buffer is not None:
         else:
             # Display an error if no gemstones are detected
             st.error(error)
-
-        #
-        #     with st.spinner("✨ Generating Gemstone Details..."):
-        #         output = ask_gem_AI(prediction)
-
-        # # to test css:
-    #             output = """Amethyst Dummy text
-    #
-    # Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
-    # Rarity
-    #
-    # Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
-    # Where to Find
-    #
-    # Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
-    # Price Range
-    #
-    # The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
-    # Preservation
-    #
-    # To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
-
-    # # Use Streamlit columns to display content side by side
-    # col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
-    #
-    # with col1:
-    #     st.markdown(
-    #         """
-    #     <style>
-    #     /* Flex container for the image and text */
-    #     .responsive-container {
-    #         display: flex;
-    #         flex-wrap: wrap; /* Allows wrapping for smaller screens */
-    #         justify-content: center;
-    #         align-items: center;
-    #         gap: 20px; /* Adds space between the image and text */
-    #     }
-    #
-    #     /* Styling for the processed image */
-    #     .processed-image {
-    #         max-width: 100%; /* Ensure it scales within its container */
-    #         width: 300px; /* Set a default width */
-    #         height: auto; /* Maintain aspect ratio */
-    #         border-radius: 12px;
-    #         box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-    #     }
-    #
-    #     /* Responsive rules for smaller screens */
-    #     @media (max-width: 768px) {
-    #         .responsive-container {
-    #             flex-direction: column; /* Stack items vertically */
-    #         }
-    #         .processed-image {
-    #             width: 80%; /* Adjust the image width for small screens */
-    #         }
-    #     }
-    #     </style>
-    #     """,
-    #         unsafe_allow_html=True,
-    #     )
-    #
-    #     # Display the processed image
-    #     st.markdown(
-    #         f"""
-    #         <div style="text-align: center; padding-top: 6vh;" class="responsive-container">
-    #             <img src="data:image/png;base64,{base64.b64encode(img_bytes).decode()}" class="processed-image" alt="Processed Gemstone Image">
-    #         </div>
-    #         """,
-    #         unsafe_allow_html=True,
-    #     )
-    #
-    # with col2:
-    #     # Display the AI output
-    #     st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
