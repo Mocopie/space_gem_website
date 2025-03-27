@@ -207,7 +207,7 @@ def ask_gem_AI(prediction):
                 if the name of the gemstone starts with a consonant use the article a
                 if the name of the gemstone starts with a vowel use the article an
 
-                if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones
+                if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones in bold
 
                 AND give the following information for each gem on the list and keep the format below AND in a markdown format:
                 An explanation of a maximum 50 words about the stone
