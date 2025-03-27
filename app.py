@@ -345,7 +345,7 @@ if img_file_buffer is not None:
                         st.markdown(output)
 
             elif isinstance(prediction, dict):  # Multiple gemstones
-                st.markdown("💎 ###List of Gemstones Detected:")
+                st.markdown("### 💎 List of Gemstones Detected:")
                 gemstone_list = ", ".join(
                     f"{gem} (x{count})" for gem, count in prediction.items()
                 )
