@@ -1,33 +1,26 @@
 import streamlit as st
 import requests
 
-# from dotenv import load_dotenv
 import os
 import base64
-from io import BytesIO
-from PIL import Image, ImageDraw
+
+# from io import BytesIO
+# from PIL import Image, ImageDraw
 
 import openai
 
-# Load environment variables, including the Roboflow API Key
-# load_dotenv()
-
-# openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
 
 
-# @st.cache_data
 def detect_gemstones(image_bytes):
     """
-    Sends the image to Roboflow YOLOv8 API for gemstone detection and classification.
+    Sends the image to our API for gemstone detection and classification.
     Returns predictions and an error message (if any).
     """
     response = requests.post(
-        # ROBOFLOW_URL,
         SPACE_GEM_URL,
-        # params={"api_key": ROBOFLOW_API_KEY},
         files={"file": image_bytes},
     )
 
@@ -35,15 +28,38 @@ def detect_gemstones(image_bytes):
         return None, "❌ Error: Unable to process image."
 
     result = response.json()
-    # if "predictions" not in result or len(result["predictions"]) == 0:
-    #     return None, "⚠️ No gemstone detected in the image."
-    if (
-        "predicted_gemstone" not in result
-        or len(result["predicted_gemstone"]) == 0
-    ):
-        return None, "⚠️ No gemstone detected in the image."
 
-    return result["predicted_gemstone"], None
+    # Handle response format with quantities of identified gemstones
+    if all(isinstance(value, int) for value in result.values()):
+        # Filter gemstones with quantities greater than 0
+        detected_gemstones = [
+            f"{gem} (Quantity: {quantity})"
+            for gem, quantity in result.items()
+            if quantity > 0
+        ]
+
+        if not detected_gemstones:  # No gemstones detected
+            return None, "⚠️ No gemstone detected in the image."
+
+        # Return all detected gemstones as a comma-separated string
+        return ", ".join(detected_gemstones), None
+
+    # Handle response format with a single predicted gemstone
+    if "predicted_gemstone" in result:
+        if not result["predicted_gemstone"]:
+            return None, "⚠️ No gemstone detected in the image."
+        return result["predicted_gemstone"], None
+
+    # Fallback: Unexpected response format
+    return None, "❌ Error: Unable to understand the response."
+
+    # if (
+    #     "predicted_gemstone" not in result
+    #     or len(result["predicted_gemstone"]) == 0
+    # ):
+    #     return None, "⚠️ No gemstone detected in the image."
+    #
+    # return result["predicted_gemstone"], None
 
 
 # def draw_boxes(image_bytes, predictions):
@@ -238,9 +254,6 @@ col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     img_file_buffer = st.file_uploader("", type=["png", "jpg", "jpeg"])
 
-# Define the variable prediction with a default value
-# prediction = None
-
 # Handle file upload and processing
 if img_file_buffer is not None:
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -248,23 +261,9 @@ if img_file_buffer is not None:
     with col2:
         img_bytes = img_file_buffer.getvalue()
         with st.spinner("✨ Analyzing the gemstone..."):
-            # result, error = detect_gemstones(img_bytes)
             prediction, error = detect_gemstones(img_bytes)
 
-        # if result:
         if prediction:
-            # first_prediction = result["predictions"][0]
-            # prediction = first_prediction["class"]
-            # prediction = prediction["predicted_gemstone"]
-            # st.markdown(
-            #     f"""
-            #     <div id="results" style="text-align: center;">
-            #         <h4>💎 Detected Gemstone:</h4>
-            #         <div>👉 {first_prediction['class'].capitalize()} (Confidence: {first_prediction['confidence']:.2f})</div>
-            #     </div>
-            #     """,
-            #     unsafe_allow_html=True,
-            # )
             st.markdown(
                 """
                 <div id="results" style="text-align: center;">
@@ -273,25 +272,6 @@ if img_file_buffer is not None:
                 """,
                 unsafe_allow_html=True,
             )
-            # st.markdown(
-            #     f"""
-            #     <div id="results" style="text-align: center;">
-            #         <h4>💎 Detected Gemstone:</h4>
-            #         <div>👉 {prediction}</div>
-            #     </div>
-            #     """,
-            #     unsafe_allow_html=True,
-            # )
-
-            # Show the processed image with bounding boxes
-            # processed_image = draw_boxes(img_bytes, result["predictions"])
-            # processed_image = draw_boxes(
-            # img_bytes, result["predicted_gemstone"]
-            # img_bytes,
-            # prediction["predicted_gemstone"],
-            #     img_bytes,
-            #     prediction,
-            # )
 
         else:
             # Display an error if no gemstones are detected
@@ -299,11 +279,8 @@ if img_file_buffer is not None:
 
         # Check if prediction exists before calling GEM_AI
         if prediction:
-            # GEM_AI
-            # @st.cache_data
+
             def ask_gem_AI(prediction):
-                # Prompt for the AI model
-                # prompt = prediction
                 response = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
                     messages=[
@@ -334,50 +311,25 @@ if img_file_buffer is not None:
                 # Return the AI response
                 return response["choices"][0]["message"]["content"]
 
-            # def ask_gem_AI(prediction):
-            #     # Prompt for the AI model
-            #     # prompt = prediction
-            #     response = openai.ChatCompletion.create(
-            #         model="gpt-3.5-turbo",
-            #         messages=[
-            #             {
-            #                 "role": "system",
-            #                 "content": """You are an expert gemologist.
-            #                 I will send you the name of a gem.
-            #                 Respond in a markdown format with:
-            #                 A short presentation about the gem
-            #                 Rarity
-            #                 Where in the world can these be found
-            #                 Price range in euros with the euro symbol and numbers written in numbers instead of words
-            #                 A short explanation how to preserve it
-            #                 Do **not** ask me any follow-up questions. Keep the response factual and concise.""",
-            #             },
-            #             {"role": "user", "content": prediction},
-            #         ],
-            #         temperature=0,  # Ensures deterministic responses
-            #     )
-            #     # Return the AI response
-            #     return response["choices"][0]["message"]["content"]
-
             with st.spinner("✨ Generating Gemstone Details..."):
-                # output = ask_gem_AI(prediction)
+                output = ask_gem_AI(prediction)
 
                 # # to test css:
-                output = """Amethyst Dummy text
-
-    Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
-    Rarity
-
-    Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
-    Where to Find
-
-    Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
-    Price Range
-
-    The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
-    Preservation
-
-    To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
+    #             output = """Amethyst Dummy text
+    #
+    # Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
+    # Rarity
+    #
+    # Amethyst is considered a semi-precious gemstone and is relatively abundant, which keeps its price affordable compared to other gemstones.
+    # Where to Find
+    #
+    # Amethyst can be found in various locations around the world, including Brazil, Uruguay, Zambia, Russia, and the United States.
+    # Price Range
+    #
+    # The price of amethyst can vary depending on the quality of the stone, but generally ranges from 5 euros to 50 euros per carat.
+    # Preservation
+    #
+    # To preserve the beauty of amethyst, it is important to protect it from scratches and sharp blows. Avoid exposing it to prolonged sunlight or high temperatures, as this can cause the color to fade. Clean amethyst jewelry with mild soap and warm water, and store it separately from other harder gemstones to prevent damage."""
 
     # Use Streamlit columns to display content side by side
     col1, col2 = st.columns([1, 1])  # Adjust column width ratios as needed
@@ -427,24 +379,6 @@ if img_file_buffer is not None:
             """,
             unsafe_allow_html=True,
         )
-        # st.markdown(
-        #     f"""
-        #     <div style="text-align: center; padding-top: 6vh; margin-left: 15rem;">
-        #         <img src="data:image/png;base64,{base64.b64encode(img_bytes).decode()}" class="processed-image" alt="Processed Gemstone Image">
-        #     </div>
-        #     """,
-        #     unsafe_allow_html=True,
-        # )
-
-        # # Display the processed image
-        # st.markdown(
-        #     f"""
-        #     <div style="text-align: center;">
-        #         <img src="data:image/png;base64,{base64.b64encode(processed_image).decode()}" class="processed-image" alt="Processed Gemstone Image">
-        #     </div>
-        #     """,
-        #     unsafe_allow_html=True,
-        # )
 
     with col2:
         # Display the AI output
