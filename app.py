@@ -29,29 +29,19 @@ def detect_gemstones(image_bytes):
 
     result = response.json()
 
-    # Handle response format with quantities of identified gemstones
-    if all(isinstance(value, int) for value in result.values()):
-        # Filter gemstones with quantities greater than 0
-        detected_gemstones = [
-            f"{gem} (Quantity: {quantity})"
-            for gem, quantity in result.items()
-            if quantity > 0
-        ]
+    # Handle single gemstone response
+    if "predicted_gemstone" in result and isinstance(
+        result["predicted_gemstone"], str
+    ):
+        return [result["predicted_gemstone"]], None
 
-        if not detected_gemstones:  # No gemstones detected
-            return None, "⚠️ No gemstone detected in the image."
+    # Handle multiple gemstone response
+    if isinstance(result, dict):
+        gemstones = {gem: count for gem, count in result.items() if count > 0}
+        if gemstones:
+            return gemstones, None
 
-        # Return all detected gemstones as a comma-separated string
-        return ", ".join(detected_gemstones), None
-
-    # Handle response format with a single predicted gemstone
-    if "predicted_gemstone" in result:
-        if not result["predicted_gemstone"]:
-            return None, "⚠️ No gemstone detected in the image."
-        return result["predicted_gemstone"], None
-
-    # Fallback: Unexpected response format
-    return None, "❌ Error: Unable to understand the response."
+    return None, "⚠️ No gemstone detected in the image."
 
     # if (
     #     "predicted_gemstone" not in result
@@ -273,48 +263,69 @@ if img_file_buffer is not None:
                 unsafe_allow_html=True,
             )
 
+            # Check if the prediction is a single gemstone or multiple gemstones
+            if isinstance(prediction, list):  # Single gemstone
+                gemstone_name = prediction[0]
+
+                st.markdown(f"**Gemstone:** {gemstone_name}")
+                # with st.spinner("✨ Generating Gemstone Details..."):
+                #     output = ask_gem_AI(gemstone_name)
+                #     st.markdown(output)
+
+            elif isinstance(prediction, dict):  # Multiple gemstones
+                st.markdown("### List of Gemstones Detected:")
+                gemstone_list = ", ".join(
+                    f"{gem} (x{count})" for gem, count in prediction.items()
+                )
+                st.markdown(f"**Gemstones:** {gemstone_list}")
+
+                # with st.spinner("✨ Generating Gemstone Details..."):
+                #     gemstone_names = ", ".join(prediction.keys())
+                #     output = ask_gem_AI(gemstone_names)
+                #     st.markdown(output)
+
         else:
             # Display an error if no gemstones are detected
             st.error(error)
 
-        # Check if prediction exists before calling GEM_AI
-        if prediction:
+        # # Check if prediction exists before calling GEM_AI
+        # if prediction:
+        #
+        #     def ask_gem_AI(prediction):
+        #         response = openai.ChatCompletion.create(
+        #             model="gpt-3.5-turbo",
+        #             messages=[
+        #                 {
+        #                     "role": "system",
+        #                     "content": """
+        #                     You are an expert gemologist.
+        #                     I will send you a list of gem names and capitalize the first letter of the gemstone.
+        #                     Respond in a user-friendly manner.
+        #                     Open with the sentense: Congratulations on finding
+        #                     if it's only one gemstone then
+        #                     if the name of the gemstone starts with a consonant use the article a
+        #                     if the name of the gemstone starts with a vowel use the article an
+        #
+        #                     if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones
+        #
+        #                     AND give the following information for each gem on the list and keep the format below AND in a markdown format:
+        #                     An explanation of a maximum 50 words about the stone
+        #                     How rare is the gem?
+        #                     Where in the world can these be found
+        #                     Price range in euros in numbers with the euros sign €
+        #                     A short explanation of how to preserve it""",
+        #                 },
+        #                 {"role": "user", "content": prediction},
+        #             ],
+        #             temperature=0,  # Ensures deterministic responses
+        #         )
+        #         # Return the AI response
+        #         return response["choices"][0]["message"]["content"]
+        #
+        #     with st.spinner("✨ Generating Gemstone Details..."):
+        #         output = ask_gem_AI(prediction)
 
-            def ask_gem_AI(prediction):
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": """
-                            You are an expert gemologist.
-                            I will send you a list of gem names and capitalize the first letter of the gemstone.
-                            Respond in a user-friendly manner.
-                            Open with the sentense: Congratulations on finding
-                            if it's only one gemstone then 
-                            if the name of the gemstone starts with a consonant use the article a 
-                            if the name of the gemstone starts with a vowel use the article an
-
-                            if it's a list of gemstones then open with the sentence Congratulations on finding: list_of_gemstones 
-
-                            AND give the following information for each gem on the list and keep the format below AND in a markdown format:
-                            An explanation of a maximum 50 words about the stone
-                            How rare is the gem?
-                            Where in the world can these be found
-                            Price range in euros in numbers with the euros sign €
-                            A short explanation of how to preserve it""",
-                        },
-                        {"role": "user", "content": prediction},
-                    ],
-                    temperature=0,  # Ensures deterministic responses
-                )
-                # Return the AI response
-                return response["choices"][0]["message"]["content"]
-
-            with st.spinner("✨ Generating Gemstone Details..."):
-                output = ask_gem_AI(prediction)
-
-                # # to test css:
+        # # to test css:
     #             output = """Amethyst Dummy text
     #
     # Amethyst is a purple variety of quartz that is popular for its stunning color and affordability. It is a widely loved gemstone that has been used in jewelry for centuries.
@@ -380,9 +391,9 @@ if img_file_buffer is not None:
             unsafe_allow_html=True,
         )
 
-    with col2:
-        # Display the AI output
-        st.markdown(output)
+    # with col2:
+    # Display the AI output
+    # st.markdown(output)
 
 # Footer (hidden)
 st.markdown(
