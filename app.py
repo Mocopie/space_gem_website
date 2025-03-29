@@ -318,7 +318,7 @@ if img_file_buffer is not None:
 
                     with col2:
                         # Display the AI output
-                        st.markdown(output)
+                        # st.markdown(output)
 
             elif isinstance(prediction, dict):  # Multiple gemstones
                 st.markdown("### 💎 List of Gemstones Detected:")
