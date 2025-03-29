@@ -2,9 +2,10 @@ import streamlit as st
 import requests
 import os
 import base64
-import openai
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# import openai
+
+# openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 # Space Gem API URL
 SPACE_GEM_URL = "https://spacegem-223626310523.europe-west1.run.app/predict/"
@@ -196,47 +197,47 @@ st.markdown(
 )
 
 
-def ask_gem_AI(prediction):
-    """
-    Communicates with OpenAI's GPT model to generate detailed gemstone information.
-    Parameters:
-        - prediction: List or dictionary of gemstone names.
-    Returns:
-        - AI-generated details in markdown format.
-    """
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {
-                "role": "system",
-                "content": """
-                You are an expert gemologist.
-                I will send you either the name of 1 gem or a list of gem names. Capitalize the first letter of each gemstone name.
-                
-                Your task:
-                - Open your response with the sentence in bold: **Congratulations on finding**
-                  - If there's only one gemstone:
-                      - If the name of the gemstone starts with a consonant, use the article "a".
-                      - If the name of the gemstone starts with a vowel, use the article "an".
-                  - If there are multiple gemstones, open with **Congratulations on finding: list_of_gemstones** (in bold).
-                
-                For each gemstone, provide the following information in markdown format. Each category must be bold and start on a new line:
-                **Details:** A brief explanation about the gemstone (maximum 50 words).
-                **Rarity:** How rare the gemstone is.
-                **Locations:** Places where the gemstone can be found.
-                **Price range:** In euros (€). Provide realistic values.
-                **Preservation tips:** Advice on how to preserve the gemstone.
-
-                Use proper markdown formatting with spaces and breaklines for readability.
-                Your output must follow this exact format for each gemstone, whether it's a single gemstone or a list of multiple gemstones.
-                """,
-            },
-            {"role": "user", "content": prediction},
-        ],
-        temperature=0,  # Ensures deterministic responses
-    )
-    # Return the AI response
-    return response["choices"][0]["message"]["content"]
+# def ask_gem_AI(prediction):
+#     """
+#     Communicates with OpenAI's GPT model to generate detailed gemstone information.
+#     Parameters:
+#         - prediction: List or dictionary of gemstone names.
+#     Returns:
+#         - AI-generated details in markdown format.
+#     """
+#     response = openai.ChatCompletion.create(
+#         model="gpt-3.5-turbo",
+#         messages=[
+#             {
+#                 "role": "system",
+#                 "content": """
+#                 You are an expert gemologist.
+#                 I will send you either the name of 1 gem or a list of gem names. Capitalize the first letter of each gemstone name.
+#
+#                 Your task:
+#                 - Open your response with the sentence in bold: **Congratulations on finding**
+#                   - If there's only one gemstone:
+#                       - If the name of the gemstone starts with a consonant, use the article "a".
+#                       - If the name of the gemstone starts with a vowel, use the article "an".
+#                   - If there are multiple gemstones, open with **Congratulations on finding: list_of_gemstones** (in bold).
+#
+#                 For each gemstone, provide the following information in markdown format. Each category must be bold and start on a new line:
+#                 **Details:** A brief explanation about the gemstone (maximum 50 words).
+#                 **Rarity:** How rare the gemstone is.
+#                 **Locations:** Places where the gemstone can be found.
+#                 **Price range:** In euros (€). Provide realistic values.
+#                 **Preservation tips:** Advice on how to preserve the gemstone.
+#
+#                 Use proper markdown formatting with spaces and breaklines for readability.
+#                 Your output must follow this exact format for each gemstone, whether it's a single gemstone or a list of multiple gemstones.
+#                 """,
+#             },
+#             {"role": "user", "content": prediction},
+#         ],
+#         temperature=0,  # Ensures deterministic responses
+#     )
+#     # Return the AI response
+#     return response["choices"][0]["message"]["content"]
 
 
 # File uploader section
@@ -261,7 +262,7 @@ if img_file_buffer is not None:
                 # st.markdown(f"💎**Gemstone:** {gemstone_name}")
                 st.markdown(f"### 💎 Gemstone Detected: {gemstone_name}")
                 with st.spinner("✨ Generating Gemstone Details..."):
-                    output = ask_gem_AI(gemstone_name)
+                    # output = ask_gem_AI(gemstone_name)
                     # st.markdown(output)
 
                     # Use Streamlit columns to display content side by side
@@ -329,7 +330,7 @@ if img_file_buffer is not None:
 
                 with st.spinner("✨ Generating Gemstone Details..."):
                     gemstone_names = ", ".join(prediction.keys())
-                    output = ask_gem_AI(gemstone_names)
+                    # output = ask_gem_AI(gemstone_names)
                     # st.markdown(output)
 
                     # Use Streamlit columns to display content side by side
